@@ -773,7 +773,7 @@ services
 */
 
 .services {
-  margin-top: 10% ;
+  margin-top: -135px;
   position: absolute;
   width: 100%;
 }
@@ -893,7 +893,7 @@ section.upcoming-meetings {
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
-  padding-top: 500px;
+  padding-top: 230px;
   padding-bottom: 110px;
 }
 

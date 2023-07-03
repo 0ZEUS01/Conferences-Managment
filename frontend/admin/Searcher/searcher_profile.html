@@ -7,7 +7,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>BrainsMeet - Participant</title>
+    <title>BrainsMeet - Searcher</title>
 
     <meta name="description" content="" />
 
@@ -51,7 +51,7 @@
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme"
                 style="background-image: url(../admin/assets/img/backgrounds/service-item-bg.jpg);">
                 <div class="app-brand demo">
-                    <a href="../landing/index_participant.html" class="app-brand-link gap-2">
+                    <a href="../landing/index_searcher.html" class="app-brand-link gap-2">
                         <img src="../landing/assets/images/landingLogo.png" alt="logo" width="200px">
                     </a>
 
@@ -66,9 +66,32 @@
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text"></span>
                     </li>
-
                     <li class="menu-item">
-                        <a href="history_participant.html" class="menu-link">
+                        <a href="create_article.html" class="menu-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class=" menu-icon bi bi-file-earmark-plus" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z" />
+                                <path
+                                    d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
+                            </svg>
+                            <div data-i18n="Analytics">Post new Article</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="searcher_articles.html" class="menu-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="menu-icon bi bi-chevron-double-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M1.646 6.646a.5.5 0 0 1 .708 0L8 12.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                                <path fill-rule="evenodd"
+                                    d="M1.646 2.646a.5.5 0 0 1 .708 0L8 8.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                            <div data-i18n="Analytics">Your submissions</div>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="searcher_history.html" class="menu-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="menu-icon bi bi-clock-history" viewBox="0 0 16 16">
                                 <path
@@ -124,7 +147,7 @@
                                                 </div>
                                                 <div class="flex-grow-1">
                                                     <span class="fw-semibold d-block">John Doe</span>
-                                                    <small class="text-muted">Participant</small>
+                                                    <small class="text-muted">Searcher</small>
                                                 </div>
                                             </div>
                                         </a>
@@ -133,7 +156,7 @@
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="../admin/participant_profile.html">
+                                        <a class="dropdown-item" href="../admin/searcher_profile.html">
                                             <i class="bx bx-user me-2"></i>
                                             <span class="align-middle">My Profile</span>
                                         </a>

@@ -16,6 +16,7 @@ class Users(BaseModel):
     birthdate: str
     address: str
     isAdmin: bool
+    picture: bytes
     nationality: int
 
 class State(BaseModel):
@@ -94,14 +95,16 @@ class Users_Login(BaseModel):
     password: str
 
 class Users_Register(BaseModel):
+    user_id: int
     first_name: str
     last_name: str
-    phone_number: str
     email: str
+    phone_number: str
     username: str
     password: str
-    confirm_password: str
     birthdate: str
+    address: str
+    picture: bytes
     nationality: int
 
 

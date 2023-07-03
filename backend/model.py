@@ -5,31 +5,89 @@ class Country(BaseModel):
     country_Name: str
     ISO: str
 
+class Users(BaseModel):
+    user_id: int
+    first_name: str
+    last_name: str
+    email: str
+    phone_number: str
+    username: str
+    password: str
+    birthdate: str
+    address: str
+    isAdmin: bool
+    nationality: int
+
+class State(BaseModel):
+    state_id: int
+    state_name: str
+
+class Organizer(BaseModel):
+    organizer_id: int
+    user_id: int
+
 class Conference(BaseModel):
     conference_id: int
     title: str
-    country: int
     address: str
     start_date: str
     end_date: str
     min_participants: int
     max_participants: int
+    country: int
+    state: int
+    organizer_id: int
 
-class Committee(BaseModel):
-    committee_id: int
-    conference: int
-    organizer_name: str
+class Participant(BaseModel):
+    participant_id: int
+    user_id: int
+
+class ParticipantInConference(BaseModel):
+    participant_id: int
+    conference_id: int
+
+class Searcher(BaseModel):
+    searcher_id: int
+    user_id: int
+
+class Articles(BaseModel):
+    article_id: int
+    article_title: str
+    article_content: bytes
+    searcher_id: int
+
+class SearcherJoinConference(BaseModel):
+    searcher_id: int
+    conference_id: int
+    article_id: int
+
+class Protractor(BaseModel):
+    protractor_id: int
+    user_id: int
+
+class Report(BaseModel):
+    report_id: int
+    report_content: bytes
+
+class ReportWrittenBy(BaseModel):
+    protractor_id: int
+    report_id: int
 
 class Submissions(BaseModel):
     submission_id: int
-    conference: int
     submission_date: str
-    document: str
+    conference_id: int
+    article_id: int
+    report_id: int
 
-class Authors(BaseModel):
-    author_id: int
-    submission: int
-    author_name: str
+class Decision(BaseModel):
+    decision_id: int
+    decision: str
+
+class OrganizerDecision(BaseModel):
+    organizer_id: int
+    submission_id: int
+    decision_id: int
 
 class Users_Login(BaseModel):
     usernameOrEmail: str
@@ -44,52 +102,5 @@ class Users_Register(BaseModel):
     birthdate: str
     country: int
 
-
-class Users(BaseModel):
-    user_id: int
-    first_name: str
-    last_name: str
-    email: str
-    username: str
-    password: str
-    birthdate: str
-    country: int
-    isAdmin: bool
-    
-class Roles(BaseModel):
-    role_id: int
-    role_name: str
-
-class RoleAssignments(BaseModel):
-    assignment_id: int
-    conference: int
-    role_id: int
-    user_id: int
-
-class Reports(BaseModel):
-    report_id: int
-    assignment_id: int
-    submission_id: int
-    rating: int
-    report_text: str
-
-class AcceptedSubmissions(BaseModel):
-    accepted_submission_id: int
-    conference: int
-    submission: int
-
-class Sessions(BaseModel):
-    session_id: int
-    conference_id: int
-    session_title: str
-    session_date: str
-    start_time: str
-    end_time: str
-    session_type: str
-
-class Articles(BaseModel):
-    article_id: int
-    submission_id: int
-    article_text: str
 
 

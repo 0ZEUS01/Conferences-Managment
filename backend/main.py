@@ -41,6 +41,39 @@ def get_countries():
 
     return countries
 
+@app.get("/state")
+def get_states():
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM State")
+    rows = cursor.fetchall()
+
+    states = []
+
+    for row in rows:
+        state_data = {
+            "state_id": row[0],
+            "state_name": row[1]
+        }
+        states.append(state_data)
+
+    return states
+
+@app.get("/decision")
+def get_decisions():
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Decision")
+    rows = cursor.fetchall()
+
+    decisions = []
+
+    for row in rows:
+        decision_data = {
+            "decision_id": row[0],
+            "decision": row[1]
+        }
+        decisions.append(decision_data)
+
+    return decisions
 
 @app.get("/conferences")
 def get_conferences():

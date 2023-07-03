@@ -7,7 +7,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>BrainsMeet - Organizer</title>
+    <title>BrainsMeet - Searcher</title>
 
     <meta name="description" content="" />
 
@@ -51,7 +51,7 @@
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme"
                 style="background-image: url(../admin/assets/img/backgrounds/service-item-bg.jpg);">
                 <div class="app-brand demo">
-                    <a href="../landing/index_organizer.html" class="app-brand-link gap-2">
+                    <a href="../landing/index_searcher.html" class="app-brand-link gap-2">
                         <img src="../landing/assets/images/landingLogo.png" alt="logo" width="200px">
                     </a>
 
@@ -63,44 +63,35 @@
 
                 <ul class="menu-inner py-3">
                     <!-- Dashboard -->
+                    <li class="menu-header small text-uppercase">
+                        <span class="menu-header-text"></span>
+                    </li>
                     <li class="menu-item">
-                        <a href="create_conferences.html" class="menu-link">
+                        <a href="create_article.html" class="menu-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="menu-icon bi bi-file-earmark-plus" viewBox="0 0 16 16">
+                                class=" menu-icon bi bi-file-earmark-plus" viewBox="0 0 16 16">
                                 <path
                                     d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z" />
                                 <path
                                     d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
                             </svg>
-                            <div data-i18n="Analytics">Create new Conference</div>
+                            <div data-i18n="Analytics">Post new Article</div>
                         </a>
                     </li>
-
-                    <li class="menu-header small text-uppercase">
-                        <span class="menu-header-text">Modify exist Conferences</span>
-                    </li>
                     <li class="menu-item">
-                        <a href="conferences_management.html" class="menu-link">
+                        <a href="searcher_articles.html" class="menu-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="menu-icon bi bi-pencil-fill" viewBox="0 0 16 16">
-                                <path
-                                    d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
+                                class="menu-icon bi bi-chevron-double-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd"
+                                    d="M1.646 6.646a.5.5 0 0 1 .708 0L8 12.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                                <path fill-rule="evenodd"
+                                    d="M1.646 2.646a.5.5 0 0 1 .708 0L8 8.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
                             </svg>
-                            <div data-i18n="Analytics">Manage Conferences</div>
+                            <div data-i18n="Analytics">Your submissions</div>
                         </a>
                     </li>
                     <li class="menu-item">
-                        <a href="reports_management.html" class="menu-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="menu-icon bi bi-pencil-fill" viewBox="0 0 16 16">
-                                <path
-                                    d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z" />
-                            </svg>
-                            <div data-i18n="Analytics">Manage Reports</div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="history_Organizer.html" class="menu-link">
+                        <a href="searcher_history.html" class="menu-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="menu-icon bi bi-clock-history" viewBox="0 0 16 16">
                                 <path
@@ -162,7 +153,7 @@
                                                 </div>
                                                 <div class="flex-grow-1">
                                                     <span class="fw-semibold d-block">John Doe</span>
-                                                    <small class="text-muted">Admin</small>
+                                                    <small class="text-muted">Searcher</small>
                                                 </div>
                                             </div>
                                         </a>
@@ -171,12 +162,11 @@
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="../admin/organizer_profile.html">
+                                        <a class="dropdown-item" href="../admin/searcher_profile.html">
                                             <i class="bx bx-user me-2"></i>
                                             <span class="align-middle">My Profile</span>
                                         </a>
                                     </li>
-
                                     <li>
                                         <a class="dropdown-item" href="../admin/login.html">
                                             <i class="bx bx-power-off me-2"></i>
@@ -200,15 +190,14 @@
                         <div class="row">
                             <!-- Striped Rows -->
                             <div class="card">
-                                <h5 class="card-header">Conferences</h5>
+                                <h5 class="card-header">Articles you have submitted</h5>
                                 <div class="table-responsive text-nowrap">
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Conference Title</th>
-                                                <th>Country</th>
-                                                <th>start | End</th>
-                                                <th>Min | Max Participants</th>
+                                                <th>Article title</th>
+                                                <th>Address</th>
                                                 <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
@@ -218,28 +207,11 @@
                                                 <td><i class="fab fa-angular fa-lg text-danger me-3"></i>
                                                     <strong>Title1</strong>
                                                 </td>
-                                                <td>Hungary</td>
+                                                <td>Title1</td>
                                                 <td>
-                                                    <ul
-                                                        class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-                                                            data-bs-placement="top" class="avatar avatar-xs pull-up"
-                                                            title="Lilian Fuller">
-                                                            12-12-2022 | 14-12-2022
-                                                        </li>
-                                                    </ul>
+                                                    Avenue France Agdal,Rabat
                                                 </td>
-                                                <td>
-                                                    <ul
-                                                        class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-                                                            data-bs-placement="top" class="avatar avatar-xs pull-up"
-                                                            title="Lilian Fuller">
-                                                            150 | 200
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                                <td><span class="badge bg-label-danger me-1">Ended</span></td>
+                                                <td><span class="badge bg-label-danger me-1">Refused</span></td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -247,10 +219,18 @@
                                                             <i class="bx bx-dots-vertical-rounded"></i>
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="javascript:void(0);"><i
-                                                                    class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                            <a class="dropdown-item" href="javascript:void(0);"><i
-                                                                    class="bx bx-trash me-1"></i> Delete</a>
+                                                            <a class="dropdown-item" href="javascript:void(0);"><svg
+                                                                    xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                    height="16" fill="currentColor"
+                                                                    class="bi bi-journal-arrow-down"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M8 5a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5A.5.5 0 0 1 8 5z" />
+                                                                    <path
+                                                                        d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z" />
+                                                                    <path
+                                                                        d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
+                                                                </svg> Your Article</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -258,30 +238,13 @@
                                             <tr>
                                                 <td><i class="fab fa-react fa-lg text-info me-3"></i> <strong>Title2
                                                     </strong></td>
-                                                <td>Morocco</td>
+                                                <td>Title2</td>
                                                 <td>
-                                                    <ul
-                                                        class="list-unstyled users-list m-0 avatar-group d-flex align-items-center ">
-                                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-                                                            data-bs-placement="top" class="avatar avatar-xs pull-up"
-                                                            title="Lilian Fuller">
-                                                            12-12-2022 | 14-12-2022
-                                                        </li>
 
-                                                    </ul>
-                                                </td>
-                                                <td>
-                                                    <ul
-                                                        class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-                                                            data-bs-placement="top" class="avatar avatar-xs pull-up"
-                                                            title="Lilian Fuller">
-                                                            500 | 1000
-                                                        </li>
+                                                    Avenue France Agdal,Rabat
 
-                                                    </ul>
                                                 </td>
-                                                <td><span class="badge bg-label-success me-1">Completed</span></td>
+                                                <td><span class="badge bg-label-success me-1">Approved</span></td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -289,41 +252,33 @@
                                                             <i class="bx bx-dots-vertical-rounded"></i>
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="javascript:void(0);"><i
-                                                                    class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                            <a class="dropdown-item" href="javascript:void(0);"><i
-                                                                    class="bx bx-trash me-1"></i> Delete</a>
+                                                            <a class="dropdown-item" href="javascript:void(0);"><svg
+                                                                    xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                    height="16" fill="currentColor"
+                                                                    class="bi bi-journal-arrow-down"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M8 5a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5A.5.5 0 0 1 8 5z" />
+                                                                    <path
+                                                                        d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z" />
+                                                                    <path
+                                                                        d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
+                                                                </svg> Your Article</a>
                                                         </div>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td><i class="fab fa-vuejs fa-lg text-success me-3"></i>
-                                                    <strong>Title3</strong></td>
-                                                <td>France</td>
-                                                <td>
-                                                    <ul
-                                                        class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-                                                            data-bs-placement="top" class="avatar avatar-xs pull-up"
-                                                            title="Lilian Fuller">
-                                                            12-12-2022 | 14-12-2022
-                                                        </li>
-
-                                                    </ul>
+                                                    <strong>Title3</strong>
                                                 </td>
+                                                <td>Title3</td>
                                                 <td>
-                                                    <ul
-                                                        class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-                                                            data-bs-placement="top" class="avatar avatar-xs pull-up"
-                                                            title="Lilian Fuller">
-                                                            1500 | 2500
-                                                        </li>
 
-                                                    </ul>
+                                                    Avenue France Agdal,Rabat
+
                                                 </td>
-                                                <td><span class="badge bg-label-warning me-1">Scheduled</span></td>
+                                                <td><span class="badge bg-label-info me-1">unreviewed</span></td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -331,40 +286,31 @@
                                                             <i class="bx bx-dots-vertical-rounded"></i>
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="javascript:void(0);"><i
-                                                                    class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                            <a class="dropdown-item" href="javascript:void(0);"><i
-                                                                    class="bx bx-trash me-1"></i> Delete</a>
+                                                            <a class="dropdown-item" href="javascript:void(0);"><svg
+                                                                    xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                    height="16" fill="currentColor"
+                                                                    class="bi bi-journal-arrow-down"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M8 5a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5A.5.5 0 0 1 8 5z" />
+                                                                    <path
+                                                                        d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z" />
+                                                                    <path
+                                                                        d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
+                                                                </svg> Your Article</a>
                                                         </div>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td><i class="fab fa-angular fa-lg text-danger me-3"></i>
-                                                    <strong>Title1</strong>
+                                                    <strong>Title4</strong>
                                                 </td>
-                                                <td>Hungary</td>
+                                                <td>Title4</td>
                                                 <td>
-                                                    <ul
-                                                        class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-                                                            data-bs-placement="top" class="avatar avatar-xs pull-up"
-                                                            title="Lilian Fuller">
-                                                            12-12-2022 | 14-12-2022
-                                                        </li>
-                                                    </ul>
+                                                    Avenue France Agdal,Rabat
                                                 </td>
-                                                <td>
-                                                    <ul
-                                                        class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
-                                                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom"
-                                                            data-bs-placement="top" class="avatar avatar-xs pull-up"
-                                                            title="Lilian Fuller">
-                                                            150 | 200
-                                                        </li>
-                                                    </ul>
-                                                </td>
-                                                <td><span class="badge bg-label-secondary me-1">Canceled</span></td>
+                                                <td><span class="badge bg-label-success me-1">APproved</span></td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -372,10 +318,18 @@
                                                             <i class="bx bx-dots-vertical-rounded"></i>
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="javascript:void(0);"><i
-                                                                    class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                            <a class="dropdown-item" href="javascript:void(0);"><i
-                                                                    class="bx bx-trash me-1"></i> Delete</a>
+                                                            <a class="dropdown-item" href="javascript:void(0);"><svg
+                                                                    xmlns="http://www.w3.org/2000/svg" width="16"
+                                                                    height="16" fill="currentColor"
+                                                                    class="bi bi-journal-arrow-down"
+                                                                    viewBox="0 0 16 16">
+                                                                    <path fill-rule="evenodd"
+                                                                        d="M8 5a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5A.5.5 0 0 1 8 5z" />
+                                                                    <path
+                                                                        d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z" />
+                                                                    <path
+                                                                        d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
+                                                                </svg> Your Article</a>
                                                         </div>
                                                     </div>
                                                 </td>

@@ -9,7 +9,7 @@
     <meta name="author" content="TemplateMo">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
 
-    <title>BrainsMeet - Organizer</title>
+    <title>BrainsMeet - Participant</title>
     <link rel="icon" type="image/x-icon" href="../landing/assets/images/logo.png" />
 
     <!-- Bootstrap core CSS -->
@@ -25,7 +25,27 @@
 </head>
 
 <body>
+    <section class="section main-banner" id="top" data-section="section1">
+        <video autoplay muted loop id="bg-video">
+            <source src="assets/images//0627.mp4" type="video/mp4" />
+        </video>
 
+        <div class="video-overlay header-text">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="caption">
+                            <h6 hidden>Hello </h6>
+                            <p style="font-size: 32px;">WELCOME TO <span style="color: aliceblue;">Brains</span><span
+                                    style="color: #bd3438;">Meet</span></p><br>
+                            <p>This is an Conferences website to help you find the best brains meeting in your country.
+                            </p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- ***** Header Area Start ***** -->
     <header class="header-area header-sticky">
         <div class="container">
@@ -33,16 +53,15 @@
                 <div class="col-12">
                     <nav class="main-nav">
                         <!-- ***** Logo Start ***** -->
-                        <a href="index_organizer.html" class="logo">
+                        <a href="index_participant.html" class="logo">
                             <img src="assets\images\landingLogo.png" alt="logo" width="80px" height="80px" />
                         </a>
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                            <li><a href="../admin/create_conferences.html">Create new Conference</a></li>
-                            <li><a href="../admin/reports_management.html">Check reports</a></li>
-                            <li><a href="../admin/history_Organizer.html">History</a></li>
-                            <li><a href="../admin/organizer_profile.html">Profile <svg
+                            <li><a href="../landing/conferences_list.html">Join a Conference</a></li>
+                            <li><a href="../admin/history_participant.html">History</a></li>
+                            <li><a href="../admin/participant_profile.html">Profile <svg
                                         xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                         class="bi bi-person" viewBox="0 0 16 16">
                                         <path
@@ -132,12 +151,12 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-heading">
-                        <h2>Upcoming Meetings</h2>
+                        <h2>Upcoming Conferences</h2>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="categories">
-                        <h4>Meeting Catgories</h4>
+                        <h4>Conference Categories</h4>
                         <ul>
                             <li><a href="#">Sed tempus enim leo</a></li>
                             <li><a href="#">Aenean molestie quis</a></li>
@@ -146,7 +165,7 @@
                             <li><a href="#">Phasellus nec sapien</a></li>
                         </ul>
                         <div class="main-button-red">
-                            <a href="meetings.html">All Upcoming Meetings</a>
+                            <a href="conferences_list.html">All Upcoming Meetings</a>
                         </div>
                     </div>
                 </div>

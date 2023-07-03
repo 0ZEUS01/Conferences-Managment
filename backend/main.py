@@ -41,22 +41,22 @@ def get_countries():
 
     return countries
 
-@app.get("/state")
+@app.get("/state_conference")
 def get_states():
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM State")
+    cursor.execute("SELECT * FROM State_conference")
     rows = cursor.fetchall()
 
-    states = []
+    states_conference = []
 
     for row in rows:
-        state_data = {
-            "state_id": row[0],
-            "state_name": row[1]
+        state_conference_data = {
+            "state_conference_id": row[0],
+            "state_conference_name": row[1]
         }
-        states.append(state_data)
+        states_conference.append(state_conference_data)
 
-    return states
+    return states_conference
 
 @app.get("/decision")
 def get_decisions():

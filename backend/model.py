@@ -96,11 +96,13 @@ class Users_Login(BaseModel):
 class Users_Register(BaseModel):
     first_name: str
     last_name: str
+    phone_number: str
     email: str
     username: str
     password: str
+    confirm_password: str
     birthdate: str
-    country: int
+    nationality: int
 
 
 

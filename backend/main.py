@@ -46,21 +46,21 @@ def get_Nationalities():
 
 
 @app.post("/register")
-async def register(user: Users):
+async def register(user: Users_Register):
     try:
         cursor = conn.cursor()
         # Check if the email is already registered
         cursor.execute(
-            "SELECT COUNT(*) FROM Users WHERE email = ?", user.email)
+            "SELECT COUNT(*) FROM Users WHERE email = ? Or username = ?", user.email ,user.username)
         if cursor.fetchone()[0] > 0:
             raise HTTPException(
-                status_code=400, detail="Email already registered")
+                status_code=400, detail="Email or username already registered")
 
         # Insert the user into the database
         cursor.execute(
             """
-                INSERT INTO Users (first_name, last_name, email, phone_number, username, password, birthdate, Address, nationality)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO Users (first_name, last_name, email, phone_number, username, password, birthdate, Address, nationality,picture)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 user.first_name,
@@ -72,6 +72,7 @@ async def register(user: Users):
                 user.birthdate,
                 user.Address,
                 user.nationality,
+                user.picture
             ),
         )
         conn.commit()
@@ -82,47 +83,49 @@ async def register(user: Users):
 
 
 @app.post("/login")
-async def login(u: Users):
+async def login(u: Users_Login):
     try:
         cursor = conn.cursor()
         # Check if the email and password match a user in the database
         cursor.execute(
             """
-            select u.user_id, u.first_name, u.last_name, u.email, u.phone_number, u.username ,u.password, u.birthdate, u.Address,c.country_name, u.picture, u.isAdmin ,'Role'= (case
-					when u.user_id in (select user_id from Participant) then 'Participant'
-					when u.user_id in (select user_id from Searcher) then 'Searcher'
-					when u.user_id in (select user_id from Organizer) then 'Organizer'
-					when u.user_id in (select user_id from Protractor) then 'Protractor'
-					end)
-					from Users u, Country c
-                    WHERE (username = ? OR email = ?) AND u.nationality = c.country_id 
+            SELECT u.user_id, u.first_name, u.last_name, u.email, u.phone_number, u.username, u.password, u.birthdate, u.Address, c.country_name, u.picture, u.isAdmin,
+            'Role' = (CASE
+                WHEN u.user_id IN (SELECT user_id FROM Participant) THEN 'Participant'
+                WHEN u.user_id IN (SELECT user_id FROM Searcher) THEN 'Searcher'
+                WHEN u.user_id IN (SELECT user_id FROM Organizer) THEN 'Organizer'
+                WHEN u.user_id IN (SELECT user_id FROM Protractor) THEN 'Protractor'
+            END)
+            FROM Users u join Country c on u.nationality = c.country_id 
+            WHERE (u.username = ? OR u.email = ?)
             """,
-            (u.username, u.email)
+            (u.usernameOrEmail, u.usernameOrEmail)
         )
         result = cursor.fetchone()
         if result is None or not auth_handler.verify_password(u.password, result.password):
             raise HTTPException(
-                status_code=401, detail="Invalid email or username or password ")
+                status_code=401, detail="Invalid email or username or password"
+            )
 
         token = auth_handler.encode_token(result[0])
         return {
-            "user_id": result.user_id,
+            "user_id": result[0],
             "access_token": token,
             "token_type": "bearer",
-            "first_name": result.first_name,
-            "last_name": result.last_name,
-            "birthdate": result.birthdate,
-            "username": result.username,
-            "email": result.email,
-            "Address": result.Address,
-            "phone_number": result.phone_number,
-            "picture": result.picture,
-            "isAdmin": result.isAdmin,
-            "Role": result.Role,
-            "nationality": result.country_name
+            "first_name": result[1],
+            "last_name": result[2],
+            "birthdate": result[7],
+            "username": result[5],
+            "email": result[3],
+            "Address": result[8],
+            "phone_number": result[4],
+            "picture": result[10],
+            "isAdmin": result[11],
+            "Role": result[12],
+            "nationality": result[9],
         }
     except pyodbc.Error as e:
-        raise HTTPException(status_code=500, detail='Database error2')
+        raise HTTPException(status_code=500, detail="Database error2")
 
 
 if __name__ == "__main__":

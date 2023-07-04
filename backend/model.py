@@ -4,9 +4,8 @@ from datetime import date
 class Country(BaseModel):
     country_id: int
     country_Name: str
-    ISO: str
 
-class Users(BaseModel):
+class Users_Register(BaseModel):
     first_name: str
     last_name: str
     email: str
@@ -16,6 +15,11 @@ class Users(BaseModel):
     birthdate: date
     Address: str
     nationality: int
+    picture: bytes
+
+class Users_Login(BaseModel):
+    usernameOrEmail: str
+    password: str
 
 
 class State(BaseModel):
@@ -89,22 +93,6 @@ class OrganizerDecision(BaseModel):
     submission_id: int
     decision_id: int
 
-class Users_Login(BaseModel):
-    usernameOrEmail: str
-    password: str
-
-class Users_Register(BaseModel):
-    user_id: int
-    first_name: str
-    last_name: str
-    email: str
-    phone_number: str
-    username: str
-    password: str
-    birthdate: str
-    address: str
-    picture: bytes
-    nationality: int
 
 
 

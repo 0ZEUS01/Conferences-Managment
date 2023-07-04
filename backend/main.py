@@ -10,7 +10,7 @@ app = FastAPI()
 auth_handler = AuthHandler()
 # Connect to SQL Server
 conn = pyodbc.connect(
-    "Driver={SQL Server};"
+    "Driver={ODBC Driver 17 for SQL Server};"
     "Server=127.0.0.1;"
     "Database=GC;"
     "UID=zeus;"
@@ -51,7 +51,7 @@ async def register(user: Users):
         cursor = conn.cursor()
         # Check if the email is already registered
         cursor.execute(
-            "SELECT COUNT(*) FROM users WHERE email = ?", user.email)
+            "SELECT COUNT(*) FROM Users WHERE email = ?", user.email)
         if cursor.fetchone()[0] > 0:
             raise HTTPException(
                 status_code=400, detail="Email already registered")
@@ -59,8 +59,8 @@ async def register(user: Users):
         # Insert the user into the database
         cursor.execute(
             """
-                INSERT INTO Users (first_name, last_name, email, phone_number, username, password, birthdate, Address, nationality, picture, isAdmin)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO Users (first_name, last_name, email, phone_number, username, password, birthdate, Address, nationality)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 user.first_name,
@@ -70,16 +70,14 @@ async def register(user: Users):
                 user.username,
                 auth_handler.get_password_hash(user.password),
                 user.birthdate,
-                user.address,
+                user.Address,
                 user.nationality,
-                user.picture,
-                user.isAdmin,
             ),
         )
         conn.commit()
-
         return {"message": "User registered successfully"}
     except pyodbc.Error as e:
+        print(e)
         raise HTTPException(status_code=500, detail='Database error1')
 
 

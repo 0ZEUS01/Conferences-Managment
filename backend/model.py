@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import date
 
 class Country(BaseModel):
     country_id: int
@@ -6,18 +7,16 @@ class Country(BaseModel):
     ISO: str
 
 class Users(BaseModel):
-    user_id: int
     first_name: str
     last_name: str
     email: str
     phone_number: str
     username: str
     password: str
-    birthdate: str
-    address: str
-    isAdmin: bool
-    picture: bytes
+    birthdate: date
+    Address: str
     nationality: int
+
 
 class State(BaseModel):
     state_id: int

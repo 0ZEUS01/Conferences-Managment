@@ -61,7 +61,7 @@
             <h4 class="mb-2">Adventure starts here 🚀</h4>
             <p class="mb-3"></p>
 
-            <form id="formAuthentication" class="mb-3" action="/register" method="POST">
+            <form id="formRegister" class="mb-3" action="/register" method="POST">
               <div class="row">
                 <div class="card-body">
                   <div class="d-flex align-items-start align-items-sm-center gap-4">
@@ -74,7 +74,7 @@
                               style="background-color: #bd3438; border: #f8020b;">
                               <span class="d-none d-sm-block">Upload new photo</span>
                               <i class="bx bx-upload d-block d-sm-none"></i>
-                              <input type="file" id="upload" class="account-file-input" hidden
+                              <input type="file" id="picture" class="account-file-input" hidden
                                   accept="image/png, image/jpeg" />
                           </label>
                           <button type="button"
@@ -82,7 +82,6 @@
                               <i class="bx bx-reset d-block d-sm-none"></i>
                               <span class="d-none d-sm-block">Reset</span>
                           </button>
-
                           <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
                       </div>
                   </div>
@@ -107,7 +106,6 @@
                     <label for="email" class="form-label">Email</label>
                     <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email">
                   </div>
-
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3">
@@ -132,23 +130,20 @@
                   <div class="mb-3 form-password-toggle">
                     <label class="form-label" for="password">Confirm password</label>
                     <div class="input-group input-group-merge">
-                      <input type="password" id="password" class="form-control" name="password"
+                      <input type="password" id="c_password" class="form-control" name="password"
                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                         aria-describedby="password">
                       <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                     </div>
                   </div>
-
                 </div>
-                <div class="mb-3">
-                  <label class="form-label" for="country">Nationality</label>
-                  <select id="Nationality" class="select2 form-select">
-                    {% for country in countries %}
-                    <option value="{{ country['country_id'] }}">{{ country.country_name }}</option>
-                    {% endfor %}
-                  </select>
+                  <div class="mb-3">
+                    <label class="form-label" for="country">Nationality</label>
+                    <select id="Nationality" name="Nationality" class="select2 form-select">
+                      <option value="#" selected>Select Your Nationality</option>
+                    </select>
                 </div>
-
+                
                 <div class="mb-3">
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms">
@@ -183,18 +178,11 @@
   <script src="../admin/assets/vendor/libs/popper/popper.js"></script>
   <script src="../admin/assets/vendor/js/bootstrap.js"></script>
   <script src="../admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-
+<script src="../admin/assets/js/contries.js"></script>  
   <script src="../admin/assets/vendor/js/menu.js"></script>
-  <!-- endbuild -->
-
-  <!-- Vendors JS -->
-
-  <!-- Main JS -->
+ 
   <script src="../admin/assets/js/main.js"></script>
 
-  <!-- Page JS -->
-
-  <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 

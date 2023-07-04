@@ -1,10 +1,9 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from model import *
 from auth import *
 import pyodbc
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
+
 
 app = FastAPI()
 
@@ -17,33 +16,42 @@ conn = pyodbc.connect(
     "UID=zeus;"
     "PWD=zeus;"
 )
-# Add CORS middleware
+# Configure CORS
+origins = ["*"]  # Set your allowed origins here
 app.add_middleware(
     CORSMiddleware,
-    # Replace with the actual origin of your frontend app
-    allow_origins=["http://localhost:3000"],
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["GET", "POST"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
-templates = Jinja2Templates(directory="../frontend/admin")
+
+@app.get("/Nationality")
+def get_Nationalities():
+    cursor = conn.cursor()
+    cursor.execute("SELECT country_id,country_name  FROM Country")
+    rows = cursor.fetchall()
+
+    Nationalities = []
+
+    for row in rows:
+        country_data = {
+            "country_id": row[0],
+            "country_name": row[1]
+        }
+        Nationalities.append(country_data)
+
+    return {"Nationality": Nationalities}
+
 
 @app.post("/register")
-async def register(user: Users_Register):
+async def register(user: Users):
     try:
         cursor = conn.cursor()
-
-        # Check if the username is already in use
-        cursor.execute(
-            "SELECT COUNT(*) FROM Users WHERE username = ?", (user.username,))
-        if cursor.fetchone()[0] > 0:
-            raise HTTPException(
-                status_code=400, detail="Username already in use")
-
         # Check if the email is already registered
         cursor.execute(
-            "SELECT COUNT(*) FROM Users WHERE email = ?", (user.email,))
+            "SELECT COUNT(*) FROM users WHERE email = ?", user.email)
         if cursor.fetchone()[0] > 0:
             raise HTTPException(
                 status_code=400, detail="Email already registered")
@@ -51,8 +59,8 @@ async def register(user: Users_Register):
         # Insert the user into the database
         cursor.execute(
             """
-            INSERT INTO Users (first_name, last_name, email, phone_number, username, password, birthdate, address, nationality, picture)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO Users (first_name, last_name, email, phone_number, username, password, birthdate, Address, nationality, picture, isAdmin)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 user.first_name,
@@ -65,166 +73,60 @@ async def register(user: Users_Register):
                 user.address,
                 user.nationality,
                 user.picture,
+                user.isAdmin,
             ),
         )
         conn.commit()
 
         return {"message": "User registered successfully"}
     except pyodbc.Error as e:
-        raise HTTPException(status_code=500, detail="Database error")
+        raise HTTPException(status_code=500, detail='Database error1')
 
 
 @app.post("/login")
-async def login(u: Users_Login):
+async def login(u: Users):
     try:
         cursor = conn.cursor()
+        # Check if the email and password match a user in the database
         cursor.execute(
-            "SELECT user_id, password FROM Users WHERE email = ? OR username = ?",
-            (u.usernameOrEmail, u.usernameOrEmail),
+            """
+            select u.user_id, u.first_name, u.last_name, u.email, u.phone_number, u.username ,u.password, u.birthdate, u.Address,c.country_name, u.picture, u.isAdmin ,'Role'= (case
+					when u.user_id in (select user_id from Participant) then 'Participant'
+					when u.user_id in (select user_id from Searcher) then 'Searcher'
+					when u.user_id in (select user_id from Organizer) then 'Organizer'
+					when u.user_id in (select user_id from Protractor) then 'Protractor'
+					end)
+					from Users u, Country c
+                    WHERE (username = ? OR email = ?) AND u.nationality = c.country_id 
+            """,
+            (u.username, u.email)
         )
         result = cursor.fetchone()
         if result is None or not auth_handler.verify_password(u.password, result.password):
             raise HTTPException(
-                status_code=401, detail="Invalid username, email, or password")
+                status_code=401, detail="Invalid email or username or password ")
 
-        user_id = result.user_id
-        token = auth_handler.encode_token(user_id)
-
-        return {"ID": user_id, "access_token": token, "token_type": "bearer"}
+        token = auth_handler.encode_token(result[0])
+        return {
+            "user_id": result.user_id,
+            "access_token": token,
+            "token_type": "bearer",
+            "first_name": result.first_name,
+            "last_name": result.last_name,
+            "birthdate": result.birthdate,
+            "username": result.username,
+            "email": result.email,
+            "Address": result.Address,
+            "phone_number": result.phone_number,
+            "picture": result.picture,
+            "isAdmin": result.isAdmin,
+            "Role": result.Role,
+            "nationality": result.country_name
+        }
     except pyodbc.Error as e:
-        raise HTTPException(status_code=500, detail='Database error')
-
-@app.get("/Nationality", response_class=HTMLResponse)
-def get_Nationalities(request: Request):
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Country")
-    rows = cursor.fetchall()
-
-    Nationalities = []
-
-    for row in rows:
-        country_data = {
-            "country_id": row[0],
-            "country_name": row[1],
-            "iso": row[2]
-        }
-        Nationalities.append(country_data)
-
-    return templates.TemplateResponse("register.html", {"request": request, "Nationalities": Nationalities})
+        raise HTTPException(status_code=500, detail='Database error2')
 
 
-@app.get("/state_conference")
-def get_states():
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM State_conference")
-    rows = cursor.fetchall()
-
-    states_conference = []
-
-    for row in rows:
-        state_conference_data = {
-            "state_conference_id": row[0],
-            "state_conference_name": row[1]
-        }
-        states_conference.append(state_conference_data)
-
-    return states_conference
-
-
-@app.get("/decision")
-def get_decisions():
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Decision")
-    rows = cursor.fetchall()
-
-    decisions = []
-
-    for row in rows:
-        decision_data = {
-            "decision_id": row[0],
-            "decision": row[1]
-        }
-        decisions.append(decision_data)
-
-    return decisions
-
-
-@app.get("/conferences")
-def get_conferences():
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Conference")
-    rows = cursor.fetchall()
-
-    conferences = []
-    columns = [column[0] for column in cursor.description]
-
-    for row in rows:
-        conference_data = dict(zip(columns, row))
-        conferences.append(conference_data)
-
-    return {"conferences": conferences}
-
-
-@app.get("/submissions")
-def get_submissions():
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Submissions")
-    rows = cursor.fetchall()
-
-    submissions = []
-    columns = [column[0] for column in cursor.description]
-
-    for row in rows:
-        submission_data = dict(zip(columns, row))
-        submissions.append(submission_data)
-
-    return {"submissions": submissions}
-
-@app.get("/users")
-def get_users():
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Users")
-    rows = cursor.fetchall()
-
-    users = []
-    columns = [column[0] for column in cursor.description]
-
-    for row in rows:
-        user_data = dict(zip(columns, row))
-        users.append(user_data)
-
-    return {"users": users}
-
-
-@app.get("/reports")
-def get_reports():
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Reports")
-    rows = cursor.fetchall()
-
-    reports = []
-    columns = [column[0] for column in cursor.description]
-
-    for row in rows:
-        report_data = dict(zip(columns, row))
-        reports.append(report_data)
-
-    return {"reports": reports}
-
-
-@app.get("/articles")
-def get_articles():
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Articles")
-    rows = cursor.fetchall()
-
-    articles = []
-    columns = [column[0] for column in cursor.description]
-
-    for row in rows:
-        article_data = dict(zip(columns, row))
-        articles.append(article_data)
-
-    return {"articles": articles}
-
-
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

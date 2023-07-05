@@ -49,17 +49,22 @@ def get_Nationalities():
 async def register(user: Users_Register):
     try:
         cursor = conn.cursor()
+
         # Check if the email is already registered
         cursor.execute(
-            "SELECT COUNT(*) FROM Users WHERE email = ? Or username = ?", (user.email, user.username))
+            "SELECT COUNT(*) FROM Users WHERE email = ? OR username = ?",
+            (user.email, user.username)
+        )
         if cursor.fetchone()[0] > 0:
             raise HTTPException(
-                status_code=400, detail="Email or username already registered")
+                status_code=400, detail="Email or username already registered"
+            )
 
-        # Insert the user into the database
+        # Insert the user into the Users table
         cursor.execute(
             """
             INSERT INTO Users (first_name, last_name, email, phone_number, username, password, birthdate, Address, nationality, picture)
+            OUTPUT inserted.*
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
@@ -75,7 +80,13 @@ async def register(user: Users_Register):
                 user.picture,
             ),
         )
+        user_id = cursor.fetchone()[0]  # Fetch the user_id
 
+        # Insert the user_id into the Participant table
+        cursor.execute(
+            "INSERT INTO Participant (user_id) VALUES (?)",
+            (user_id,),
+        )
         conn.commit()
         return {"message": "User registered successfully"}
     except pyodbc.Error as e:
@@ -88,6 +99,7 @@ async def login(u: Users_Login):
     try:
         cursor = conn.cursor()
         # Check if the email and password match a user in the database
+        print(u)
         cursor.execute(
             """
             SELECT u.user_id, u.first_name, u.last_name, u.email, u.phone_number, u.username, u.password, u.birthdate, u.Address, c.country_name, u.picture, u.isAdmin,

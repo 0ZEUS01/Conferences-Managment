@@ -1,0 +1,82 @@
+<html>
+<head>
+    <title>BrainsMeet - Choices</title>
+    <link rel="icon" type="image/x-icon" href="../landing/assets/images/logo.png" />
+    <style>
+        /* Define the styles for the links */
+        a {
+            text-decoration: none;
+            color: #000; /* Set the initial color for the links */
+        }
+        
+        a.clicked {
+            color: #bd3438; /* Set the color for clicked links */
+        }
+        
+        a:hover {
+            color: #f5a425; /* Set the color when hovering over the links */
+        }
+    </style>
+</head>
+<body background="../admin/assets/img/backgrounds/meetings-page-bg.jpg">
+    <p align="left" style="background-image: url(../admin/assets/img/backgrounds/service-item-bg.jpg);">
+        <a href="../landing/index_organizer.html" class="app-brand-link gap-2">
+            <img src="../landing/assets/images/landingLogo.png" alt="logo" width="200px">
+        </a>
+    </p>
+    <br><br><br><br><br><br>
+    <p align="center">
+        <font size="20" color="white">Join As</font>
+    </p><br>
+    <p align="center">
+        <table>
+            <tr>
+                <td style="padding: 10px;">
+                    <a href="../landing/index_participant.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="125" height="125" fill="currentColor" class="bi bi-person-bounding-box"
+                            viewBox="0 0 16 16">
+                            <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z" />
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                        </svg>
+                    </a>
+                </td>
+                <td style="padding: 10px;">
+                    <a href="../landing/index_searcher.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="125" height="125" fill="currentColor" class="bi bi-person-bounding-box"
+                            viewBox="0 0 16 16">
+                            <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z" />
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                        </svg>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="../landing/index_participant.html">
+                        <font face="Arial" size="3" color="white">
+                            <p align="center">Participant</p>
+                        </font>
+                    </a>
+                </td>
+                <td>
+                    <a href="../landing/index_searcher.html">
+                        <font face="Arial" size="3" color="white">
+                            <p align="center">Searcher</p>
+                        </font>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </p>
+    <script>
+        // Add an event listener to the links
+        const links = document.querySelectorAll("a");
+        links.forEach(link => {
+            link.addEventListener("click", (event) => {
+                links.forEach(link => link.classList.remove("clicked")); // Remove "clicked" class from all links
+                link.classList.add("clicked"); // Add "clicked" class to the clicked link
+            });
+        });
+    </script>
+</body>
+</html>

@@ -65,27 +65,29 @@
               <div class="row">
                 <div class="card-body">
                   <div class="d-flex align-items-start align-items-sm-center gap-4">
-                    <svg xmlns="http://www.w3.org/2000/svg"id="uploadedAvatar" height="100" width="100" fill="currentColor" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
-                      <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
-                      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" id="uploadedAvatar" height="100" width="100"
+                      fill="currentColor" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+                      <path
+                        d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z" />
+                      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                     </svg>
-                      <div class="button-wrapper">
-                          <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0"
-                              style="background-color: #bd3438; border: #f8020b;">
-                              <span class="d-none d-sm-block">Upload new photo</span>
-                              <i class="bx bx-upload d-block d-sm-none"></i>
-                              <input type="file" id="picture" class="account-file-input" hidden
-                                  accept="image/png, image/jpeg" />
-                          </label>
-                          <button type="button"
-                              class="btn btn-outline-secondary account-image-reset mb-4">
-                              <i class="bx bx-reset d-block d-sm-none"></i>
-                              <span class="d-none d-sm-block">Reset</span>
-                          </button>
-                          <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
-                      </div>
+                    <div class="button-wrapper">
+                      <label for="picture" class="btn btn-primary me-2 mb-4" tabindex="0"
+                        style="background-color: #bd3438; border: #f8020b;">
+                        <span class="d-none d-sm-block">Upload new photo</span>
+                        <i class="bx bx-upload d-block d-sm-none"></i>
+                        <input type="file" id="picture" name="picture" class="account-file-input" hidden
+                          accept="image/png, image/jpeg" />
+                      </label>
+                      <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                        <i class="bx bx-reset d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Reset</span>
+                      </button>
+
+                      <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                    </div>
                   </div>
-              </div>
+                </div>
                 <div class="col-md-6">
                   <div class="mb-3">
                     <label for="FirstName" class="form-label">First Name</label>
@@ -137,13 +139,16 @@
                     </div>
                   </div>
                 </div>
-                  <div class="mb-3">
-                    <label class="form-label" for="country">Nationality</label>
-                    <select id="Nationality" name="Nationality" class="select2 form-select">
-                      <option value="#" selected>Select Your Nationality</option>
-                    </select>
+                <div class="mb-3 col-md-6">
+                  <label class="form-label" for="country">Nationality</label>
+                  <select id="Nationality" name="Nationality" class="select2 form-select">
+                    <option value="#" selected>Select Your Nationality</option>
+                  </select>
                 </div>
-                
+                <div class="mb-3 col-md-6">
+                  <label for="Address" class="form-label">Address</label>
+                  <input type="text" class="form-control" id="Address" name="Address" placeholder="Enter your Address">
+                </div>
                 <div class="mb-3">
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="terms-conditions" name="terms">
@@ -178,9 +183,11 @@
   <script src="../admin/assets/vendor/libs/popper/popper.js"></script>
   <script src="../admin/assets/vendor/js/bootstrap.js"></script>
   <script src="../admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-<script src="../admin/assets/js/contries.js"></script>  
+  <script src="../admin/assets/js/contries.js"></script>
+  <script src="../admin/assets/js/register.js"></script>
+
   <script src="../admin/assets/vendor/js/menu.js"></script>
- 
+
   <script src="../admin/assets/js/main.js"></script>
 
   <script async defer src="https://buttons.github.io/buttons.js"></script>

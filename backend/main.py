@@ -51,7 +51,7 @@ async def register(user: Users_Register):
         cursor = conn.cursor()
         # Check if the email is already registered
         cursor.execute(
-            "SELECT COUNT(*) FROM Users WHERE email = ? Or username = ?", user.email ,user.username)
+            "SELECT COUNT(*) FROM Users WHERE email = ? Or username = ?", (user.email, user.username))
         if cursor.fetchone()[0] > 0:
             raise HTTPException(
                 status_code=400, detail="Email or username already registered")
@@ -59,8 +59,8 @@ async def register(user: Users_Register):
         # Insert the user into the database
         cursor.execute(
             """
-                INSERT INTO Users (first_name, last_name, email, phone_number, username, password, birthdate, Address, nationality,picture)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO Users (first_name, last_name, email, phone_number, username, password, birthdate, Address, nationality, picture)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 user.first_name,
@@ -72,9 +72,10 @@ async def register(user: Users_Register):
                 user.birthdate,
                 user.Address,
                 user.nationality,
-                user.picture
+                user.picture,
             ),
         )
+
         conn.commit()
         return {"message": "User registered successfully"}
     except pyodbc.Error as e:

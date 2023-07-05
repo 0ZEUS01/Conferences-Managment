@@ -109,9 +109,6 @@ function handleFileRead(pictureBytes) {
             }
         })
         .then((responseData) => {
-            // Handle success
-            alert("Success: " + responseData.message);
-
             // Redirect to login page
             window.location.href = "../admin/login.html";
         })

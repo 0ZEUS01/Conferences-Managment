@@ -104,12 +104,23 @@ async def login(u: Users_Login):
             """
             SELECT u.user_id, u.first_name, u.last_name, u.email, u.phone_number, u.username, u.password, u.birthdate, u.Address, c.country_name, u.picture, u.isAdmin,
             'Role' = (CASE
-                WHEN u.user_id IN (SELECT user_id FROM Participant) THEN 'Participant'
-                WHEN u.user_id IN (SELECT user_id FROM Searcher) THEN 'Searcher'
-                WHEN u.user_id IN (SELECT user_id FROM Organizer) THEN 'Organizer'
-                WHEN u.user_id IN (SELECT user_id FROM Protractor) THEN 'Protractor'
+                WHEN EXISTS (SELECT 1 FROM Participant WHERE user_id = u.user_id) THEN 'Participant'
+                ELSE ''
+            END) +
+            (CASE
+                WHEN EXISTS (SELECT 1 FROM Searcher WHERE user_id = u.user_id) THEN (CASE WHEN 'Role' = '' THEN '' ELSE 'And' END) + 'Searcher'
+                ELSE ''
+            END) +
+            (CASE
+                WHEN EXISTS (SELECT 1 FROM Organizer WHERE user_id = u.user_id) THEN (CASE WHEN 'Role' = '' THEN '' ELSE 'And' END) + 'Organizer'
+                ELSE ''
+            END) +
+            (CASE
+                WHEN EXISTS (SELECT 1 FROM Protractor WHERE user_id = u.user_id) THEN (CASE WHEN 'Role' = '' THEN '' ELSE 'And' END) + 'Protractor'
+                ELSE ''
             END)
-            FROM Users u join Country c on u.nationality = c.country_id 
+            FROM Users u
+            JOIN Country c ON u.nationality = c.country_id 
             WHERE (u.username = ? OR u.email = ?)
             """,
             (u.usernameOrEmail, u.usernameOrEmail)

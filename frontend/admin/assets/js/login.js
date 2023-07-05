@@ -48,40 +48,41 @@ loginForm.addEventListener("submit", (e) => {
             localStorage.setItem("isAdmin", responseData.isAdmin);
 
             setTimeout(() => {
-                const role = responseData.Role;
-                if (role === "Participant") {
-                    window.location.href = "../landing/index_participant.html";
-                } else if (role === "Searcher") {
-                    window.location.href = "../landing/index_searcher.html";
-                } else if (role === "Organizer") {
-                    window.location.href = "../landing/index_organizer.html";
-                } else if (role === "Protractor") {
-                    window.location.href = "../landing/index_protractor.html";
-                } else if (role === "Participant" && role === "Searcher") {
-                    window.location.href = "../choices/Participant_Searcher.html";
-                } else if (role === "Participant" && role === "Protractor") {
-                    window.location.href = "../choices/Participant_Protractor.html";
-                } else if (role === "Participant" && role === "Organizer") {
-                    window.location.href = "../choices/Participant_Organizer.html";
-                } else if (role === "Searcher" && role === "Organizer") {
-                    window.location.href = "../landing/Searcher_Organizer.html";
-                } else if (role === "Searcher" && role === "Protractor") {
-                    window.location.href = "../landing/Searcher_Protractor.html";
-                } else if (role === "Organizer" && role === "Protractor") {
-                    window.location.href = "../landing/Organizer_Protractor.html";
-                } else if (role === "Participant" && role === "Searcher" && role === "Protractor") {
-                    window.location.href = "../choices/Participant_Searcher_Protractor.html";
-                } else if (role === "Participant" && role === "Searcher" && role === "Organizer") {
-                    window.location.href = "../choices/Participant_Searcher_Organizer.html";
-                } else if (role === "Participant" && role === "Protractor" && role === "Organizer") {
-                    window.location.href = "../choices/Participant_Protractor_Organizer.html";
-                } else if (role === "Searcher" && role === "Protractor" && role === "Organizer") {
-                    window.location.href = "../choices/Searcher_Protractor_Organizer.html";
-                } else if (role === "Participant" && role === "Searcher" && role === "Protractor" && role === "Organizer") {
+                const roles = responseData.Role;
+                if (roles.includes("ParticipantAndSearcherAndOrganizerAndProtractor")) {
                     window.location.href = "../choices/All.html";
+                } else if (roles.includes("ParticipantAndSearcherAndProtractor")) {
+                    window.location.href = "../choices/Participant_Searcher_Protractor.html";
+                } else if (roles.includes("ParticipantAndSearcherAndOrganizer")) {
+                    window.location.href = "../choices/Participant_Searcher_Organizer.html";
+                } else if (roles.includes("ParticipantAndOrganizerAndProtractor")) {
+                    window.location.href = "../choices/Participant_Protractor_Organizer.html";
+                } else if (roles.includes("AndSearcherAndOrganizerAndProtractor")) {
+                    window.location.href = "../choices/Searcher_Protractor_Organizer.html";
+                } else if (roles.includes("ParticipantAndSearcher")) {
+                    window.location.href = "../choices/Participant_Searcher.html";
+                } else if (roles.includes("ParticipantAndProtractor")) {
+                    window.location.href = "../choices/Participant_Protractor.html";
+                } else if (roles.includes("ParticipantAndOrganizer") && roles.includes("Organizer")) {
+                    window.location.href = "../choices/Participant_Organizer.html";
+                } else if (roles.includes("AndSearcherAndOrganizer") && roles.includes("Organizer")) {
+                    window.location.href = "../landing/Searcher_Organizer.html";
+                } else if (roles.includes("AndSearcherAndProtractor")) {
+                    window.location.href = "../landing/Searcher_Protractor.html";
+                } else if (roles.includes("AndOrganizerAndProtractor")) {
+                    window.location.href = "../landing/Organizer_Protractor.html";
+                } else if (roles.includes("AndProtractor")) {
+                    window.location.href = "../landing/index_protractor.html";
+                } else if (roles.includes("Participant")) {
+                    window.location.href = "../landing/index_participant.html";
+                } else if (roles.includes("AndSearcher")) {
+                    window.location.href = "../landing/index_searcher.html";
+                } else if (roles.includes("AndOrganizer")) {
+                    window.location.href = "../landing/index_organizer.html";
                 } else {
-                    window.location.href = "../landing/index_guest.html"
+                    window.location.href = "../landing/index_guest.html";
                 }
+
             }, 100);
         })
         .catch((error) => {

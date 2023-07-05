@@ -27,22 +27,22 @@ app.add_middleware(
 )
 
 
-@app.get("/Nationality")
-def get_Nationalities():
+@app.get("/country")
+def get_countries():
     cursor = conn.cursor()
     cursor.execute("SELECT country_id,country_name  FROM Country")
     rows = cursor.fetchall()
 
-    Nationalities = []
+    countries = []
 
     for row in rows:
         country_data = {
             "country_id": row[0],
             "country_name": row[1]
         }
-        Nationalities.append(country_data)
+        countries.append(country_data)
 
-    return {"Nationality": Nationalities}
+    return {"country": countries}
 
 
 @app.post("/register")
@@ -120,7 +120,7 @@ async def login(u: Users_Login):
                 ELSE ''
             END)
             FROM Users u
-            JOIN Country c ON u.nationality = c.country_id 
+            JOIN Country c ON u.nationality = c.country_id
             WHERE (u.username = ? OR u.email = ?)
             """,
             (u.usernameOrEmail, u.usernameOrEmail)
@@ -150,6 +150,44 @@ async def login(u: Users_Login):
         }
     except pyodbc.Error as e:
         raise HTTPException(status_code=500, detail="Database error2")
+
+
+@app.post("/create_conference")
+async def create_conference(c: Add_conference):
+    try:
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT COUNT(*) FROM Conference WHERE title = ?",
+            (c.title)
+        )
+        if cursor.fetchone()[0] > 0:
+            raise HTTPException(
+                status_code=400, detail="A conference with same title already registered"
+            )
+
+        cursor.execute(
+            """
+            INSERT INTO Conference (title, country, address, min_participants, max_participants, organizer_id, start_date, end_date)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                c.title,
+                c.country,
+                c.address,
+                c.min_participants,
+                c.max_participants,
+                c.organizer_id,
+                c.start_date,
+                c.end_date,
+            ),
+        )
+
+        conn.commit()
+        return {"message": "Conference registered successfully"}
+    except pyodbc.Error as e:
+        print(e)
+        raise HTTPException(status_code=500, detail='Database error')
 
 
 if __name__ == "__main__":

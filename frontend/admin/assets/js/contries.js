@@ -1,11 +1,11 @@
-const selectElement = document.getElementById('Nationality');
+const selectElement = document.getElementById('country');
 
 const fetchCountries = async () => {
     try {
-        const response = await fetch("http://127.0.0.1:8000/Nationality");
+        const response = await fetch("http://127.0.0.1:8000/country");
         if (response.ok) {
             const data = await response.json();
-            updateOptions(data.Nationality);
+            updateOptions(data.country);
         } else {
             console.error('Failed to fetch countries:', response.status);
         }

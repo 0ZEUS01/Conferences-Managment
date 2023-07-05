@@ -43,7 +43,7 @@ function handleFileReadCompletion(event) {
 }
 
 
-function handleFileRead(pictureBytes) {
+function handleFileRead(pictureBytes) { 
     let first_name = document.getElementById("FirstName").value;
     let last_name = document.getElementById("LastName").value;
     let PhoneNumber = document.getElementById("PhoneNumber").value;
@@ -52,7 +52,7 @@ function handleFileRead(pictureBytes) {
     let user_email = document.getElementById("email").value;
     let user_password = document.getElementById("password").value;
     let user_c_password = document.getElementById("c_password").value;
-    let user_country_id = document.getElementById("Nationality").value;
+    let user_country_id = document.getElementById("country").value;
     let user_Address = document.getElementById("Address").value;
 
     // Check if any input is empty

@@ -30,8 +30,7 @@ class Organizer(BaseModel):
     organizer_id: int
     user_id: int
 
-class Conference(BaseModel):
-    conference_id: int
+class Add_conference(BaseModel):
     title: str
     address: str
     start_date: str

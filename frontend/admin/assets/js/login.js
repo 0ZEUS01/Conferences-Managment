@@ -32,7 +32,6 @@ loginForm.addEventListener("submit", (e) => {
             }
         })
         .then((responseData) => {
-            alert("User logged in successfully");
             localStorage.setItem("access_token", responseData.access_token);
             localStorage.setItem("birthdate", responseData.birthdate);
             localStorage.setItem("username", responseData.username);
@@ -83,7 +82,7 @@ loginForm.addEventListener("submit", (e) => {
                 } else {
                     window.location.href = "../landing/index_guest.html"
                 }
-            }, 3000);
+            }, 100);
         })
         .catch((error) => {
             console.log("Error:", error);

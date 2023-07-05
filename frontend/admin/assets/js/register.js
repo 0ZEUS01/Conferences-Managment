@@ -6,17 +6,42 @@ registerForm.addEventListener("submit", (e) => {
     let fileInput = document.getElementById("picture");
     let pictureFile = fileInput.files[0];
 
-    let reader = new FileReader();
-    reader.onloadend = handleFileReadCompletion;
-
-    reader.readAsArrayBuffer(pictureFile);
+    if (!pictureFile) {
+        // Set a default picture
+        let defaultPictureUrl = "../admin/assets/img/avatars/default.png";
+        fetch(defaultPictureUrl)
+            .then((response) => response.blob())
+            .then((blob) => handleFileReadCompletion(blob))
+            .catch((error) => {
+                console.error("Failed to load the default picture:", error);
+            });
+    } else {
+        let reader = new FileReader();
+        reader.onloadend = handleFileReadCompletion;
+        reader.readAsArrayBuffer(pictureFile);
+    }
 });
 
 function handleFileReadCompletion(event) {
-    let reader = event.target;
-    let pictureBytes = new Uint8Array(reader.result);
-    handleFileRead(pictureBytes);
+    let pictureBytes;
+    if (event instanceof Blob) {
+        let reader = new FileReader();
+        reader.onloadend = () => {
+            pictureBytes = new Uint8Array(reader.result);
+            handleFileRead(pictureBytes);
+        };
+        reader.readAsArrayBuffer(event);
+    } else {
+        let reader = event.target;
+        if (reader.readyState === FileReader.DONE) {
+            pictureBytes = new Uint8Array(reader.result);
+            handleFileRead(pictureBytes);
+        } else {
+            console.error("Failed to read the picture file.");
+        }
+    }
 }
+
 
 function handleFileRead(pictureBytes) {
     let first_name = document.getElementById("FirstName").value;

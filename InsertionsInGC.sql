@@ -253,8 +253,50 @@ GO
 INSERT INTO State_conference Values('Completed'),('Ended'),('SCHEDULED'),('CANCELED');
 GO
 
-INSERT INTO State_conference Values('REFUSED'),('APPROVED'),('UNREVIEWED');
+INSERT INTO Decision Values('REFUSED'),('APPROVED'),('UNREVIEWED');
 GO
+
+/*select u.user_id, u.first_name, u.last_name, u.email, u.phone_number, u.username ,u.password, u.birthdate, u.Address,c.country_name, u.picture, u.isAdmin ,'Role'= (case
+					when u.user_id in (select user_id from Participant) then 'Participant'
+					when u.user_id in (select user_id from Searcher) then 'Searcher'
+					when u.user_id in (select user_id from Organizer) then 'Organizer'
+					when u.user_id in (select user_id from Protractor) then 'Protractor'
+					end),c.country_name
+					from Users u, Country c
+            WHERE email = ? AND u.nationality = c.country_id
+			go*/
+				select * from conference
+			insert into Protractor(user_id) values(2)
+
+			SELECT u.user_id, u.first_name, u.last_name, u.email, u.phone_number, u.username, u.password, u.birthdate, u.Address, c.country_name, u.picture, u.isAdmin,
+    'Role' = (CASE
+        WHEN EXISTS (SELECT 1 FROM Participant WHERE user_id = u.user_id) THEN 'Participant'
+        ELSE ''
+    END) +
+    (CASE
+        WHEN EXISTS (SELECT 1 FROM Searcher WHERE user_id = u.user_id) THEN (CASE WHEN 'Role' = '' THEN '' ELSE 'And' END) + 'Searcher'
+        ELSE ''
+    END) +
+    (CASE
+        WHEN EXISTS (SELECT 1 FROM Organizer WHERE user_id = u.user_id) THEN (CASE WHEN 'Role' = '' THEN '' ELSE 'And' END) + 'Organizer'
+        ELSE ''
+    END) +
+    (CASE
+        WHEN EXISTS (SELECT 1 FROM Protractor WHERE user_id = u.user_id) THEN (CASE WHEN 'Role' = '' THEN '' ELSE 'And' END) + 'Protractor'
+        ELSE ''
+    END)
+FROM Users u
+JOIN Country c ON u.nationality = c.country_id 
+SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants, Co.max_participants, S.state_conference_name FROM Conference Co JOIN Country C ON Co.country=C.country_id JOIN State_conference S ON CO.state_conference_id=S.state_conference_id
+
+
+			/*INSERT INTO Users (first_name, last_name, email)
+			OUTPUT inserted.*
+			VALUES ('John', 'Doe', 'john.dsoe@example.com');
+			declare @id int
+			set @id = (select user_id from Users where user_id = SCOPE_IDENTITY())
+			insert into Participant(user_id) values (@id)*/
+
 ---- Insert into Conference table
 --INSERT INTO Conference (conference_id, title, country, address, start_date, end_date, min_participants, max_participants)
 --VALUES (1, 'Conference Title', 1, 'Conference Address', '2023-01-01', '2023-01-05', 10, 100);
@@ -269,7 +311,7 @@ GO
 --INSERT INTO Authors (author_id, submission, author_name) VALUES (1, 1, 'Author Name');
 
 ---- Insert into Users table
---INSERT INTO Users (first_name, last_name, email, username, password, birthdate, country, isAdmin) VALUES ('first_name','last_name','user@example.com', 'username', 'password', '1990-01-01', 1, 0);
+INSERT INTO Users (first_name, last_name, email, username, password, birthdate, nationality, isAdmin) VALUES ('first_name','last_name','user@example.com', 'username', 'password', '1990-01-01', 1, 0);
 
 ---- Insert into Roles table
 --INSERT INTO Roles (role_id, role_name) VALUES (1, 'Role Name');

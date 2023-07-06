@@ -26,10 +26,6 @@ class State(BaseModel):
     state_id: int
     state_name: str
 
-class Organizer(BaseModel):
-    organizer_id: int
-    user_id: int
-
 class Add_conference(BaseModel):
     title: str
     address: str
@@ -40,6 +36,12 @@ class Add_conference(BaseModel):
     country: int
     state: int
     organizer_id: int
+    
+class Organizer(BaseModel):
+    organizer_id: int
+    user_id: int
+
+
 
 class Participant(BaseModel):
     participant_id: int

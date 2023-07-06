@@ -17,8 +17,7 @@ CREATE TABLE Country (
 	ISO NVARCHAR(MAX),
     CONSTRAINT PK_COUNTRY PRIMARY KEY (country_id)
 );
-GO
-
+GO	
 -- Create Users table
 CREATE TABLE Users (
     user_id BIGINT IDENTITY,
@@ -48,7 +47,7 @@ GO
 
 -- Create organisateurs table
 CREATE TABLE Organizer (
-    organizer_id BIGINT,
+    organizer_id BIGINT IDENTITY,
 	user_id BIGINT,
     CONSTRAINT PK_ORGANIZER PRIMARY KEY (organizer_id),
 	CONSTRAINT FK_USERS_ORGANIZER FOREIGN KEY (user_id) REFERENCES Users(user_id)
@@ -57,7 +56,7 @@ GO
 
 -- Create Conference table
 CREATE TABLE Conference (
-    conference_id BIGINT,
+    conference_id BIGINT IDENTITY,
     title NVARCHAR(MAX),
     country BIGINT,
     address NVARCHAR(MAX),
@@ -76,7 +75,7 @@ GO
 
 -- Create participant table
 CREATE TABLE Participant (
-    participant_id BIGINT,
+    participant_id BIGINT IDENTITY,
 	user_id BIGINT,
     CONSTRAINT PK_PARTICIPANT PRIMARY KEY (participant_id),
 	CONSTRAINT FK_USERS_PARTICIPANT FOREIGN KEY (user_id) REFERENCES Users(user_id)
@@ -95,7 +94,7 @@ GO
 
 -- Create searcher table
 CREATE TABLE Searcher (
-    searcher_id BIGINT,
+    searcher_id BIGINT IDENTITY,
 	user_id BIGINT,
     CONSTRAINT PK_SEARCHER PRIMARY KEY (searcher_id),
 	CONSTRAINT FK_USERS_SEARCHER FOREIGN KEY (user_id) REFERENCES Users(user_id)
@@ -104,7 +103,7 @@ GO
 
 -- Create Articles table
 CREATE TABLE Article (
-    article_id BIGINT,
+    article_id BIGINT IDENTITY,
     article_title NVARCHAR(MAX),
 	article_content VARBINARY(MAX),
 	searcher_id BIGINT,
@@ -127,7 +126,7 @@ GO
 
 -- Create protractor table
 CREATE TABLE Protractor(
-    protractor_id BIGINT,
+    protractor_id BIGINT IDENTITY,
 	user_id BIGINT,
     CONSTRAINT PK_PROTRACTOR PRIMARY KEY (protractor_id),
 	CONSTRAINT FK_USERS_PROTRACTOR FOREIGN KEY (user_id) REFERENCES Users(user_id)
@@ -135,7 +134,7 @@ CREATE TABLE Protractor(
 GO
 
 CREATE TABLE Report (
-    report_id BIGINT,
+    report_id BIGINT IDENTITY,
 	report_content VARBINARY(MAX),
     CONSTRAINT PK_REPORT PRIMARY KEY (report_id)
 );
@@ -151,28 +150,17 @@ CREATE TABLE ReportWrittenBy(
 );
 GO
 
--- Create State_Submission table
-CREATE TABLE State_Submission (
-    state_submission_id BIGINT IDENTITY,
-    state_submission_name NVARCHAR(MAX),
-    CONSTRAINT PK_STATE_SUBMISSION PRIMARY KEY (state_submission_id)
-);
-GO
-
 -- Create Submission table
 CREATE TABLE Submission (
-    submission_id BIGINT,
+    submission_id BIGINT IDENTITY,
 	submission_date DATE,
 	conference_id BIGINT,
 	article_id BIGINT,
 	report_id BIGINT,
-	state_submission_id BIGINT,
     CONSTRAINT PK_SUBMISSION PRIMARY KEY (submission_id),
 	CONSTRAINT FK_CONFERENCE_SUBMISSION FOREIGN KEY (conference_id) REFERENCES Conference(conference_id),
     CONSTRAINT FK_ARTICLE_SUBMISSION FOREIGN KEY (article_id) REFERENCES Article(article_id),
-	CONSTRAINT FK_REPORT_SUBMISSION FOREIGN KEY (report_id) REFERENCES Report(report_id),
-	CONSTRAINT FK_STATE_SUBMISSION_SUBMISSION FOREIGN KEY (state_submission_id) REFERENCES State_Submission(state_submission_id),
-
+	CONSTRAINT FK_REPORT_SUBMISSION FOREIGN KEY (report_id) REFERENCES Report(report_id)
 );
 GO
 

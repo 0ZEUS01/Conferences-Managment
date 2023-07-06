@@ -25,6 +25,15 @@ formCreateConference.addEventListener("submit", async (e) => {
         alert("Please fill in all fields");
         return false; // Prevent form submission
     }
+
+    if (start_in > ends_in) {
+        alert("The starting date must be before the ending date of the conference");
+        return false; // Prevent form submission
+    }
+    if (MinPNb > MaxPNb) {
+        alert("The minimum participant number must be smaller than maximum participant number");
+        return false; // Prevent form submission
+    }
     let organizerId = localStorage.getItem("user_id");
     // Create an object with the request body
     const requestBody = {
@@ -35,7 +44,7 @@ formCreateConference.addEventListener("submit", async (e) => {
         min_participants: parseInt(MinPNb),
         max_participants: parseInt(MaxPNb),
         country: parseInt(country_id),
-        state: 3, 
+        state: parseInt(3), 
         organizer_id: parseInt(organizerId),
     };
 

@@ -27,6 +27,49 @@ app.add_middleware(
 )
 
 
+@app.get("/state")
+def get_state():
+    cursor = conn.cursor()
+    cursor.execute("SELECT *  FROM State_conference")
+    rows = cursor.fetchall()
+
+    states = []
+
+    for row in rows:
+        state_data = {
+            "state_conference_id": row[0],
+            "state_conference_name": row[1]
+        }
+        states.append(state_data)
+
+    return {"state": states}
+
+
+@app.get("/get_conference")
+def get_conference():
+    cursor = conn.cursor()
+    cursor.execute("SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants, Co.max_participants, S.state_conference_name, Co.address, Co.organizer_id FROM Conference Co JOIN Country C ON Co.country=C.country_id JOIN State_conference S ON CO.state_conference_id=S.state_conference_id")
+    rows = cursor.fetchall()
+
+    conferences = []
+
+    for row in rows:
+        conference_data = {
+            "title": row[0],
+            "country_name": row[1],
+            "start_date": row[2],
+            "end_date": row[3],
+            "min_participants": row[4],
+            "max_participants": row[5],
+            "state_conference_name": row[6],
+            "Address": row[7],
+            "organizer_id": row[8],
+        }
+        conferences.append(conference_data)
+
+    return {"conference": conferences}
+
+
 @app.get("/country")
 def get_countries():
     cursor = conn.cursor()
@@ -168,8 +211,45 @@ async def create_conference(c: Add_conference):
 
         cursor.execute(
             """
-            INSERT INTO Conference (title, country, address, min_participants, max_participants, organizer_id, start_date, end_date)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO Conference (title, country, address, min_participants, max_participants, organizer_id, start_date, state_conference_id, end_date)
+                VALUES (?, ?, ?, ?, ?, ?, ?, 3, ?)
+            """,
+            (
+                c.title,
+                c.country,
+                c.address,
+                c.min_participants,
+                c.max_participants,
+                c.organizer_id,
+                c.start_date,
+                c.end_date,
+            ),
+        )
+
+        conn.commit()
+        return {"message": "Conference registered successfully"}
+    except pyodbc.Error as e:
+        print(e)
+        raise HTTPException(status_code=500, detail='Database error')
+
+@app.post("/edit_conference")
+async def create_conference(c: Add_conference):
+    try:
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT COUNT(*) FROM Conference WHERE title = ?",
+            (c.title)
+        )
+        if cursor.fetchone()[0] > 0:
+            raise HTTPException(
+                status_code=400, detail="A conference with same title already registered"
+            )
+
+        cursor.execute(
+            """
+                UPDATE Conference (title, country, address, min_participants, max_participants, organizer_id, start_date, state_conference_id, end_date)
+                SET (?, ?, ?, ?, ?, ?, ?, 3, ?)
             """,
             (
                 c.title,

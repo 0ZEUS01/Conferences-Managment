@@ -36,7 +36,20 @@ class Add_conference(BaseModel):
     country: int
     state: int
     organizer_id: int
-    
+
+class Edit_conference(BaseModel):
+    title: str
+    address: str
+    start_date: date
+    end_date: date
+    min_participants: int
+    max_participants: int
+    country: int
+    state_conference_id: int
+    organizer_id: int
+    conference_id: int
+
+
 class Organizer(BaseModel):
     organizer_id: int
     user_id: int

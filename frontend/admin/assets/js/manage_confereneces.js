@@ -33,7 +33,7 @@ $(document).ready(function () {
                 } else if (conf.state_conference_name === 'CANCELED') {
                     var badge = $("<span class='badge bg-label-secondary me-1'>").text(conf.state_conference_name);
                     stateCell.append(badge);
-                } 
+                }
                 row.append(stateCell);
 
                 var editLink = $('<a class="dropdown-item edit-link" data-bs-toggle="modal" data-bs-target="#editConf"><i class="bx bx-edit-alt me-1"></i> Edit</a>');
@@ -51,12 +51,24 @@ $(document).ready(function () {
                 // Use the conferenceData to populate the form in the modal
                 $('#modalCenterTitle').text('Edit Conference: ' + conferenceData.title);
                 $('#title').val(conferenceData.title);
-                $('#country').val(conferenceData.country_name); // Set the selected option based on country_name
                 $('#Address').val(conferenceData.Address);
                 $('#start_in').val(conferenceData.start_date);
                 $('#ends_in').val(conferenceData.end_date);
                 $('#MinPNb').val(conferenceData.min_participants);
                 $('#MaxPNb').val(conferenceData.max_participants);
+
+                // Fetch the countries data from the API
+                fetchCountries().then(function (countries) {
+                    // Create a new option with the current country as the default value and content
+                    var defaultOption = $('<option>').val(conferenceData.country_id).text(conferenceData.country_name);
+                    $('#country').empty().append(defaultOption);
+                    updateOptions(countries);
+                });
+                fetchStates().then(function (states) {
+                    var defaultOption = $('<option>').val(conferenceData.state_conference_id).text(conferenceData.state_conference_name);
+                    $('#state').empty().append(defaultOption);
+                    updateOptions(states);
+                });
             });
         },
         error: function (xhr, status, error) {
@@ -65,3 +77,81 @@ $(document).ready(function () {
         },
     });
 });
+
+const selectElement = document.getElementById('country');
+
+const fetchCountries = async () => {
+    try {
+        const response = await fetch("http://127.0.0.1:8000/country");
+        if (response.ok) {
+            const data = await response.json();
+            updateOptions(data.country);
+        } else {
+            console.error('Failed to fetch countries:', response.status);
+        }
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+};
+
+const updateOptions = (countries) => {
+    
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Select Your Country';
+    selectElement.appendChild(defaultOption);
+
+    if (Array.isArray(countries)) {
+        countries.forEach((country) => {
+            const option = document.createElement('option');
+            option.value = country.country_id;
+            option.textContent = country.country_name;
+            selectElement.appendChild(option);
+        });
+    } else {
+        const loadingOption = document.createElement('option');
+        loadingOption.textContent = 'no countries found';
+        selectElement.appendChild(loadingOption);
+    }
+};
+
+fetchCountries();
+
+    const selectElementState = document.getElementById('state');
+
+    const fetchStates = async () => { 
+        try {
+            const response = await fetch("http://127.0.0.1:8000/state");
+            if (response.ok) {
+                const data = await response.json();
+                updateOptions(data.state);
+            } else {
+                console.error('Failed to fetch states:', response.status);
+            }
+        } catch (error) {
+            console.error('An error occurred:', error);
+        }
+    };
+    const updateOptionsState = (states) => { 
+        selectElementState.innerHTML = ''; 
+
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Select Your state';
+        selectElementState.appendChild(defaultOption);
+
+        if (states && states.length > 0) {
+            states.forEach((state) => {
+                const option = document.createElement('option');
+                option.value = state.state_conference_id;
+                option.textContent = state.state_conference_name;
+                selectElementState.appendChild(option);
+            });
+        } else {
+            const noStatesOption = document.createElement('option');
+            noStatesOption.textContent = 'No states found';
+            selectElementState.appendChild(noStatesOption);
+        }
+    };
+
+    fetchStates(); 

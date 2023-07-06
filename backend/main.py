@@ -232,43 +232,46 @@ async def create_conference(c: Add_conference):
         print(e)
         raise HTTPException(status_code=500, detail='Database error')
 
+
 @app.post("/edit_conference")
-async def create_conference(c: Add_conference):
+async def edit_conference(conference: Edit_conference):
     try:
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT COUNT(*) FROM Conference WHERE title = ?",
-            (c.title)
+            "SELECT COUNT(*) FROM Conference WHERE conference_id = ?",
+            (conference.conference_id,),
         )
-        if cursor.fetchone()[0] > 0:
+        if cursor.fetchone()[0] == 0:
             raise HTTPException(
-                status_code=400, detail="A conference with same title already registered"
+                status_code=404, detail="Conference not found"
             )
-
         cursor.execute(
             """
-                UPDATE Conference (title, country, address, min_participants, max_participants, organizer_id, start_date, state_conference_id, end_date)
-                SET (?, ?, ?, ?, ?, ?, ?, 3, ?)
+                UPDATE Conference
+                SET title=?, country=?, address=?, min_participants=?, max_participants=?,
+                    organizer_id=?, start_date=?, state_conference_id=?, end_date=?
+                WHERE conference_id=?
             """,
             (
-                c.title,
-                c.country,
-                c.address,
-                c.min_participants,
-                c.max_participants,
-                c.organizer_id,
-                c.start_date,
-                c.end_date,
+                conference.title,
+                conference.country,
+                conference.address,
+                conference.min_participants,
+                conference.max_participants,
+                conference.organizer_id,
+                conference.start_date,
+                conference.state_conference_id,
+                conference.end_date,
+                conference.conference_id,
             ),
         )
 
         conn.commit()
-        return {"message": "Conference registered successfully"}
+        return {"message": "Conference updated successfully"}
     except pyodbc.Error as e:
         print(e)
-        raise HTTPException(status_code=500, detail='Database error')
-
+        raise HTTPException(status_code=500, detail="Database error")
 
 if __name__ == "__main__":
     import uvicorn

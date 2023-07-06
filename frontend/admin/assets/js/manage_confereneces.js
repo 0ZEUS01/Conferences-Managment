@@ -57,18 +57,29 @@ $(document).ready(function () {
                 $('#MinPNb').val(conferenceData.min_participants);
                 $('#MaxPNb').val(conferenceData.max_participants);
 
-                // Fetch the countries data from the API
-                fetchCountries().then(function (countries) {
-                    // Create a new option with the current country as the default value and content
-                    var defaultOption = $('<option>').val(conferenceData.country_id).text(conferenceData.country_name);
-                    $('#country').empty().append(defaultOption);
-                    updateOptions(countries);
-                });
-                fetchStates().then(function (states) {
-                    var defaultOption = $('<option>').val(conferenceData.state_conference_id).text(conferenceData.state_conference_name);
-                    $('#state').empty().append(defaultOption);
-                    updateOptions(states);
-                });
+                var selectInput = document.getElementById('countryy');
+                var options = selectInput.options;
+
+                for (var i = 0; i < options.length; i++) {
+                    var optionValue = options[i].text;
+
+                    if (optionValue === conferenceData.country_name) {
+                        options[i].selected = true;
+                        break;
+                    }
+                }
+
+                var selectInput = document.getElementById('statee');
+                var options = selectInput.options;
+
+                for (var i = 0; i < options.length; i++) {
+                    var optionValue = options[i].text;
+
+                    if (optionValue === conferenceData.state_conference_name) {
+                        options[i].selected = true;
+                        break;
+                    }
+                }
             });
         },
         error: function (xhr, status, error) {
@@ -78,14 +89,14 @@ $(document).ready(function () {
     });
 });
 
-const selectElement = document.getElementById('country');
+const selectElement = document.getElementById('countryy');
 
 const fetchCountries = async () => {
     try {
         const response = await fetch("http://127.0.0.1:8000/country");
         if (response.ok) {
             const data = await response.json();
-            updateOptions(data.country);
+            updateOptionss(data.country);
         } else {
             console.error('Failed to fetch countries:', response.status);
         }
@@ -94,8 +105,8 @@ const fetchCountries = async () => {
     }
 };
 
-const updateOptions = (countries) => {
-    
+const updateOptionss = (countries) => {
+    selectElement.innerHTML = '';
     const defaultOption = document.createElement('option');
     defaultOption.value = '';
     defaultOption.textContent = 'Select Your Country';
@@ -117,41 +128,41 @@ const updateOptions = (countries) => {
 
 fetchCountries();
 
-    const selectElementState = document.getElementById('state');
+const selectElementState = document.getElementById('statee');
 
-    const fetchStates = async () => { 
-        try {
-            const response = await fetch("http://127.0.0.1:8000/state");
-            if (response.ok) {
-                const data = await response.json();
-                updateOptions(data.state);
-            } else {
-                console.error('Failed to fetch states:', response.status);
-            }
-        } catch (error) {
-            console.error('An error occurred:', error);
-        }
-    };
-    const updateOptionsState = (states) => { 
-        selectElementState.innerHTML = ''; 
-
-        const defaultOption = document.createElement('option');
-        defaultOption.value = '';
-        defaultOption.textContent = 'Select Your state';
-        selectElementState.appendChild(defaultOption);
-
-        if (states && states.length > 0) {
-            states.forEach((state) => {
-                const option = document.createElement('option');
-                option.value = state.state_conference_id;
-                option.textContent = state.state_conference_name;
-                selectElementState.appendChild(option);
-            });
+const fetchStates = async () => {
+    try {
+        const response = await fetch("http://127.0.0.1:8000/state");
+        if (response.ok) {
+            const data = await response.json();
+            updateOptionsState(data.state);
         } else {
-            const noStatesOption = document.createElement('option');
-            noStatesOption.textContent = 'No states found';
-            selectElementState.appendChild(noStatesOption);
+            console.error('Failed to fetch states:', response.status);
         }
-    };
+    } catch (error) {
+        console.error('An error occurred:', error);
+    }
+};
+const updateOptionsState = (states) => {
+    selectElementState.innerHTML = '';
 
-    fetchStates(); 
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Select Your state';
+    selectElementState.appendChild(defaultOption);
+
+    if (states && states.length > 0) {
+        states.forEach((state) => {
+            const option = document.createElement('option');
+            option.value = state.state_conference_id;
+            option.textContent = state.state_conference_name;
+            selectElementState.appendChild(option);
+        });
+    } else {
+        const noStatesOption = document.createElement('option');
+        noStatesOption.textContent = 'No states found';
+        selectElementState.appendChild(noStatesOption);
+    }
+};
+
+fetchStates(); 

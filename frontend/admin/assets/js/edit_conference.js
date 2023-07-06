@@ -10,8 +10,8 @@ formeditconference.addEventListener("submit", async (e) => {
 
     let MinPNb = document.getElementById("MinPNb").value;
     let MaxPNb = document.getElementById("MaxPNb").value;
-    let country_id = document.getElementById("country").value;
-    let state = document.getElementById("state").value;
+    let country_id = document.getElementById("countryy").value;
+    let state = document.getElementById("statee").value;
 
     // Check if any input is empty
     if (
@@ -32,10 +32,11 @@ formeditconference.addEventListener("submit", async (e) => {
         alert("The starting date must be before the ending date of the conference");
         return false;
     }
-    if (MinPNb > MaxPNb) {
-        alert("The minimum participant number must be smaller than maximum participant number");
+    if (parseInt(MinPNb) > parseInt(MaxPNb)) {
+        alert("The minimum participant number must be smaller than the maximum participant number");
         return false;
     }
+
     let organizerId = localStorage.getItem("user_id");
     // Create an object with the request body
     const requestBody = {
@@ -46,31 +47,27 @@ formeditconference.addEventListener("submit", async (e) => {
         min_participants: parseInt(MinPNb),
         max_participants: parseInt(MaxPNb),
         country: parseInt(country_id),
-        state: parseInt(3), 
+        state: parseInt(state), 
         organizer_id: parseInt(organizerId),
     };
 
-    fetch("http://127.0.0.1:8000/create_conference", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-    })
-        .then((response) => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error(response.status);
-            }
-        })
-        .then((responseData) => {
-            console.log(responseData); // Log the response data for debugging
-            // Redirect to login page
-            window.location.href = "../admin/conferences_management.html";
-        })
-        .catch((error) => {
-            console.error("Conference creation request failed:", error);
+    try {
+        const response = await fetch("http://127.0.0.1:8000/edit_conference", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
         });
 
-})
+        if (response.ok) {
+            const data = await response.json();
+            // Handle the response data
+            console.log(data);
+        } else {
+            throw new Error(response.status);
+        }
+    } catch (error) {
+        console.error("Conference modification request failed:", error);
+    }
+});

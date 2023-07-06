@@ -1,12 +1,11 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import pyodbc
 from model import *
 from auth import *
-import pyodbc
 
 
 app = FastAPI()
-
 auth_handler = AuthHandler()
 # Connect to SQL Server
 conn = pyodbc.connect(
@@ -16,8 +15,9 @@ conn = pyodbc.connect(
     "UID=zeus;"
     "PWD=zeus;"
 )
+
 # Configure CORS
-origins = ["*"]  # Set your allowed origins here
+origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -27,65 +27,78 @@ app.add_middleware(
 )
 
 
+@app.get("/country")
+def get_countries():
+    try:
+        cursorCountries = conn.cursor()
+        cursorCountries.execute("SELECT country_id, country_name FROM Country")
+        rows = cursorCountries.fetchall()
+
+        countries = []
+
+        for row in rows:
+            country_data = {
+                "country_id": row[0],
+                "country_name": row[1]
+            }
+            countries.append(country_data)
+
+        return {"country": countries}
+
+    finally:
+        cursorCountries.close()
+
+
 @app.get("/state")
 def get_state():
-    cursor = conn.cursor()
-    cursor.execute("SELECT *  FROM State_conference")
-    rows = cursor.fetchall()
+    try:
+        cursorState = conn.cursor()
+        cursorState.execute("SELECT state_conference_id, state_conference_name FROM State_conference")
+        rows = cursorState.fetchall()
 
-    states = []
+        states = []
 
-    for row in rows:
-        state_data = {
-            "state_conference_id": row[0],
-            "state_conference_name": row[1]
-        }
-        states.append(state_data)
+        for row in rows:
+            state_data = {
+                "state_conference_id": row[0],
+                "state_conference_name": row[1]
+            }
+            states.append(state_data)
 
-    return {"state": states}
+        return {"state": states}
+
+    finally:
+        cursorState.close()
 
 
 @app.get("/get_conference")
 def get_conference():
-    cursor = conn.cursor()
-    cursor.execute("SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants, Co.max_participants, S.state_conference_name, Co.address, Co.organizer_id FROM Conference Co JOIN Country C ON Co.country=C.country_id JOIN State_conference S ON CO.state_conference_id=S.state_conference_id")
-    rows = cursor.fetchall()
+    try:
+        cursorConference = conn.cursor()
+        cursorConference.execute("SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants, Co.max_participants, S.state_conference_name, Co.address, Co.organizer_id FROM Conference Co JOIN Country C ON Co.country=C.country_id JOIN State_conference S ON CO.state_conference_id=S.state_conference_id")
+        rows = cursorConference.fetchall()
 
-    conferences = []
+        conferences = []
 
-    for row in rows:
-        conference_data = {
-            "title": row[0],
-            "country_name": row[1],
-            "start_date": row[2],
-            "end_date": row[3],
-            "min_participants": row[4],
-            "max_participants": row[5],
-            "state_conference_name": row[6],
-            "Address": row[7],
-            "organizer_id": row[8],
-        }
-        conferences.append(conference_data)
+        for row in rows:
+            conference_data = {
+                "title": row[0],
+                "country_name": row[1],
+                "start_date": row[2],
+                "end_date": row[3],
+                "min_participants": row[4],
+                "max_participants": row[5],
+                "state_conference_name": row[6],
+                "Address": row[7],
+                "organizer_id": row[8],
+            }
+            conferences.append(conference_data)
 
-    return {"conference": conferences}
+        return {"conference": conferences}
 
+    finally:
+        cursorConference.close()
 
-@app.get("/country")
-def get_countries():
-    cursor = conn.cursor()
-    cursor.execute("SELECT country_id,country_name  FROM Country")
-    rows = cursor.fetchall()
-
-    countries = []
-
-    for row in rows:
-        country_data = {
-            "country_id": row[0],
-            "country_name": row[1]
-        }
-        countries.append(country_data)
-
-    return {"country": countries}
 
 
 @app.post("/register")

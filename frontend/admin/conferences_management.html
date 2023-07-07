@@ -176,7 +176,6 @@
                                             <span class="align-middle">My Profile</span>
                                         </a>
                                     </li>
-
                                     <li>
                                         <a class="dropdown-item" href="../admin/login.html">
                                             <i class="bx bx-power-off me-2"></i>
@@ -185,6 +184,7 @@
                                     </li>
                                 </ul>
                             </li>
+
 
                             <!--/ User -->
                         </ul>
@@ -354,22 +354,11 @@
                 <!-- Vendors JS -->
                 <!-- Main JS -->
                 <script src="../admin/assets/js/main.js"></script>
+                <script src="../admin/assets/js/showUserPicture.js"></script>
 
                 <!-- Page JS -->
                 <script src="../admin/assets/js/manage_confereneces.js"></script>
-                <script>
-                    // Retrieve the profile picture from local storage
-                    var pictureBytes = localStorage.getItem('picture');
-
-                    // Convert the byte array to a Blob object
-                    var pictureBlob = new Blob([new Uint8Array(pictureBytes)], { type: 'image/png' });
-
-                    // Create a URL for the Blob object
-                    var pictureUrl = URL.createObjectURL(pictureBlob);
-
-                    // Set the source of the profile picture dropdown image
-                    document.getElementById('profilePictureDropdown').src = pictureUrl;
-                </script>
+                <script src="../admin/assets/js/showUserPicture.js"></script>
                 <!-- Place this tag in your head or just before your close body tag. -->
                 <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>

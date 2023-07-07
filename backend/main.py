@@ -137,6 +137,65 @@ def get_conference():
         finally:
             cursorConference.close()
 
+@app.get("/get_Endedconferences")
+def get_conference():
+    with lock:
+        try:
+            cursorConference = conn.cursor()
+            cursorConference.execute("SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants, Co.max_participants, S.state_conference_name, Co.address, Co.organizer_id,Co.conference_id FROM Conference Co JOIN Country C ON Co.country=C.country_id JOIN State_conference S ON CO.state_conference_id=S.state_conference_id WHERE S.state_conference_name='ENDED'")
+            rows = cursorConference.fetchall()
+
+            conferences = []
+
+            for row in rows:
+                conference_data = {
+                    "title": row[0],
+                    "country_name": row[1],
+                    "start_date": row[2],
+                    "end_date": row[3],
+                    "min_participants": row[4],
+                    "max_participants": row[5],
+                    "state_conference_name": row[6],
+                    "Address": row[7],
+                    "organizer_id": row[8],
+                    "conference_id": row[9]
+                }
+                conferences.append(conference_data)
+
+            return {"conference": conferences}
+
+        finally:
+            cursorConference.close()
+
+@app.get("/get_Canceledconferences")
+def get_conference():
+    with lock:
+        try:
+            cursorConference = conn.cursor()
+            cursorConference.execute("SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants, Co.max_participants, S.state_conference_name, Co.address, Co.organizer_id,Co.conference_id FROM Conference Co JOIN Country C ON Co.country=C.country_id JOIN State_conference S ON CO.state_conference_id=S.state_conference_id WHERE S.state_conference_name='CANCELED'")
+            rows = cursorConference.fetchall()
+
+            conferences = []
+
+            for row in rows:
+                conference_data = {
+                    "title": row[0],
+                    "country_name": row[1],
+                    "start_date": row[2],
+                    "end_date": row[3],
+                    "min_participants": row[4],
+                    "max_participants": row[5],
+                    "state_conference_name": row[6],
+                    "Address": row[7],
+                    "organizer_id": row[8],
+                    "conference_id": row[9]
+                }
+                conferences.append(conference_data)
+
+            return {"conference": conferences}
+
+        finally:
+            cursorConference.close()
 
 @app.post("/register")
 async def register(user: Users_Register):

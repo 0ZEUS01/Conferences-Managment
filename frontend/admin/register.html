@@ -65,23 +65,17 @@
               <div class="row">
                 <div class="card-body">
                   <div class="d-flex align-items-start align-items-sm-center gap-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" id="uploadedAvatar" height="100" width="100"
-                      fill="currentColor" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
-                      <path
-                        d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z" />
-                      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                    </svg>
+                    <img src="../admin/assets/img/avatars/1.png" alt="user-avatar" class="d-block rounded" height="100"
+                      width="100" id="uploadedAvatar" />
                     <div class="button-wrapper">
                       <label for="picture" class="btn btn-primary me-2 mb-4" tabindex="0"
                         style="background-color: #bd3438; border: #f8020b;">
                         <span class="d-none d-sm-block">Upload new photo</span>
                         <i class="bx bx-upload d-block d-sm-none"></i>
                         <input type="file" id="picture" name="picture" class="account-file-input" hidden
-                          accept="image/png, image/jpeg" />
+                          accept="image/png, image/jpeg" onchange="showPreview(event)" />
                       </label>
-                      
-
-                      <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                      <p class="text-muted mb-0">Allowed JPG, or PNG.</p>
                     </div>
                   </div>
                 </div>
@@ -156,7 +150,8 @@
                 </div>
               </div>
 
-              <button class="btn btn-primary d-grid w-100" type="submit" style="background-color: #bd3438; border: #f8020b;">Sign
+              <button class="btn btn-primary d-grid w-100" type="submit"
+                style="background-color: #bd3438; border: #f8020b;">Sign
                 up</button>
             </form>
 
@@ -175,7 +170,16 @@
   </div>
 
   <!-- / Content -->
-
+  <script>
+    function showPreview(event) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var uploadedAvatar = document.getElementById('uploadedAvatar');
+        uploadedAvatar.src = reader.result;
+      }
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  </script>
   <script src="../admin/assets/vendor/libs/jquery/jquery.js"></script>
   <script src="../admin/assets/vendor/libs/popper/popper.js"></script>
   <script src="../admin/assets/vendor/js/bootstrap.js"></script>

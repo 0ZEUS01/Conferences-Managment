@@ -11,7 +11,6 @@ $(document).ready(function () {
 
             // Add new data to the table
             var conferences = response.conference;
-
             for (var i = 0; i < conferences.length; i++) {
                 var conf = conferences[i];
                 var row = $("<tr>");
@@ -48,6 +47,7 @@ $(document).ready(function () {
             // Event handler for the edit link
             $('.edit-link').click(function () {
                 var conferenceData = $(this).data('conference');
+                localStorage.setItem("conferenceData", JSON.stringify(conferenceData));
                 // Use the conferenceData to populate the form in the modal
                 $('#modalCenterTitle').text('Edit Conference: ' + conferenceData.title);
                 $('#title').val(conferenceData.title);

@@ -75,7 +75,7 @@ def get_state():
 def get_conference():
     try:
         cursorConference = conn.cursor()
-        cursorConference.execute("SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants, Co.max_participants, S.state_conference_name, Co.address, Co.organizer_id FROM Conference Co JOIN Country C ON Co.country=C.country_id JOIN State_conference S ON CO.state_conference_id=S.state_conference_id")
+        cursorConference.execute("SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants, Co.max_participants, S.state_conference_name, Co.address, Co.organizer_id,Co.conference_id FROM Conference Co JOIN Country C ON Co.country=C.country_id JOIN State_conference S ON CO.state_conference_id=S.state_conference_id")
         rows = cursorConference.fetchall()
 
         conferences = []
@@ -91,6 +91,7 @@ def get_conference():
                 "state_conference_name": row[6],
                 "Address": row[7],
                 "organizer_id": row[8],
+                "conference_id": row[9]
             }
             conferences.append(conference_data)
 

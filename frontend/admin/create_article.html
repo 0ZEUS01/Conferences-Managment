@@ -116,14 +116,6 @@
 
 
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-                        <!-- Search -->
-                        <div class="navbar-nav align-items-center">
-                            <div class="nav-item d-flex align-items-center">
-
-                            </div>
-                        </div>
-                        <!-- /Search -->
-
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
 
                             <!-- User -->
@@ -131,8 +123,7 @@
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
                                     data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        <img src="../admin/assets/img/avatars/1.png" alt
-                                            class="w-px-40 h-auto rounded-circle" />
+                                        <img id="profilePicture" src="" class="w-px-40 h-auto rounded-circle" />
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -141,13 +132,13 @@
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-                                                        <img src="../admin/assets/img/avatars/1.png" alt
+                                                        <img id="profilePictureDropdown" src=""
                                                             class="w-px-40 h-auto rounded-circle" />
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <span class="fw-semibold d-block">John Doe</span>
-                                                    <small class="text-muted">Searcher</small>
+                                                    <span class="fw-semibold d-block" id="username">John Doe</span>
+                                                    <small class="text-muted">Admin</small>
                                                 </div>
                                             </div>
                                         </a>
@@ -156,7 +147,7 @@
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="../admin/searcher_profile.html">
+                                        <a class="dropdown-item" href="../admin/organizer_profile.html">
                                             <i class="bx bx-user me-2"></i>
                                             <span class="align-middle">My Profile</span>
                                         </a>
@@ -188,44 +179,46 @@
                                         <h5 class="mb-0">Article for "Conference Title"</h5>
                                     </div>
                                     <div class="card-body">
-                                        <form>
+                                        <form id="formCreateArticle" action="/create_article" method="POST">
                                             <div class="col-md-6" style="display: flex; gap: 10px; width: auto;">
                                                 <div class="mb-3" style="flex: 1;">
-                                                    <label class="form-label" for="basic-icon-default-phone">
-                                                        Article title</label>
+                                                    <label class="form-label" for="article_title">Article
+                                                        title</label>
                                                     <div class="input-group input-group-merge">
-                                                        <span id="basic-icon-default-phone2"
-                                                            class="input-group-text"><svg
-                                                                xmlns="http://www.w3.org/2000/svg" width="16"
+                                                        <span id="article_title2" class="input-group-text">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
                                                                 height="16" fill="currentColor"
                                                                 class="bi bi-chat-left-dots" viewBox="0 0 16 16">
                                                                 <path
                                                                     d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
                                                                 <path
                                                                     d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                                                            </svg></span>
-                                                        <input type="text" id="basic-icon-default-phone"
+                                                            </svg>
+                                                        </span>
+                                                        <input type="text" id="article_title"
                                                             class="form-control phone-mask"
                                                             placeholder="Enter your Article title"
                                                             aria-label="658 799 8941"
-                                                            aria-describedby="basic-icon-default-phone2" />
+                                                            aria-describedby="article_title2" />
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0"
+                                            <label for="upload" class="btn btn-primary me-2 mb-4"
                                                 style="background-color: #bd3438; border: #f8020b;">
                                                 <span class="d-none d-sm-block">Upload your Article</span>
                                                 <i class="bx bx-upload d-block d-sm-none"></i>
                                                 <input type="file" id="upload" class="account-file-input" hidden
                                                     accept=".pdf,.doc,.docx" />
-                                            </label><br>
+                                            </label>
+                                            <br>
                                             <button type="submit" class="btn btn-primary"
                                                 style="background-color: #bd3438; border: #f8020b;">Post</button>
                                         </form>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -259,9 +252,10 @@
 
                 <script src="../admin/assets/vendor/js/menu.js"></script>
                 <!-- endbuild -->
+                <script src="../admin/assets/js/showUserPicture.js"></script>
 
                 <!-- Vendors JS -->
-
+                <script src="../admin/assets/js/create_article.js"></script>
                 <!-- Main JS -->
                 <script src="../admin/assets/js/main.js"></script>
 

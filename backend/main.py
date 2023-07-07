@@ -382,6 +382,43 @@ async def edit_conference(conference: Edit_conference):
         print(e)
         raise HTTPException(status_code=500, detail="Database error")
 
+@app.post("/create_submissions")
+async def create_submissions(c: Create_Submissions):
+    try:
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT COUNT(*) FROM Article WHERE article_title = ?",
+            (c.article_title)
+        )
+        if cursor.fetchone()[0] > 0:
+            raise HTTPException(
+                status_code=400, detail="An Article with same title already registered"
+            )
+
+        cursor.execute(
+            """
+                INSERT INTO Article (article_title, article_content,searcher_id)
+                VALUES (?, ?, ?)
+                INSERT INTO Submission(submission_date, conference_id, article_id, report_id)
+            """,
+            (
+                c.article_title,
+                c.article_content,
+                c.searcher_id,
+                c.submission_date,
+                c.conference_id,
+                c.article_id,
+                c.report_id,
+            ),
+        )
+
+        conn.commit()
+        return {"message": "Submission registered successfully"}
+    except pyodbc.Error as e:
+        print(e)
+        raise HTTPException(status_code=500, detail='Database error')
+
 
 @app.delete("/delete_conference/{conferenceId}")
 def delete_conference(conferenceId: int):
@@ -408,6 +445,7 @@ def delete_conference(conferenceId: int):
     except pyodbc.Error as e:
         print(e)
         raise HTTPException(status_code=500, detail="Database error")
+
 
 if __name__ == "__main__":
     import uvicorn

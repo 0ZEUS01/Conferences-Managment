@@ -21,7 +21,6 @@ class Users_Login(BaseModel):
     usernameOrEmail: str
     password: str
 
-
 class State(BaseModel):
     state_id: int
     state_name: str
@@ -48,6 +47,15 @@ class Edit_conference(BaseModel):
     state_conference_id: int
     organizer_id: int
     conference_id: int
+
+class Create_Submissions(BaseModel):
+    article_title: str
+    article_content: bytes
+    searcher_id: int
+    submission_date: str
+    conference_id: int
+    article_id: int
+    report_id: int
 
 
 class Organizer(BaseModel):

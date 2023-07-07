@@ -401,6 +401,7 @@ async def create_submissions(c: Create_Submissions):
                 INSERT INTO Article (article_title, article_content,searcher_id)
                 VALUES (?, ?, ?)
                 INSERT INTO Submission(submission_date, conference_id, article_id, report_id)
+                VALUES(?, ?, ?, ?)
             """,
             (
                 c.article_title,

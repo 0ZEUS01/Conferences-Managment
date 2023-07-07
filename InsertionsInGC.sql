@@ -250,12 +250,13 @@ INSERT INTO country (country_name, ISO) VALUES ('Zambia', 'ZM');
 INSERT INTO country (country_name, ISO) VALUES ('Zimbabwe', 'ZW');
 GO
 
-INSERT INTO State_conference Values('Completed'),('Ended'),('SCHEDULED'),('CANCELED');
+INSERT INTO State_conference Values('COMPLETED'),('ENDED'),('SCHEDULED'),('CANCELED');
 GO
 
 INSERT INTO Decision Values('REFUSED'),('APPROVED'),('UNREVIEWED');
 GO
-
+DELETE FROM Conference WHERE conference_id=3
+SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants, Co.max_participants, S.state_conference_name, Co.address, Co.organizer_id,Co.conference_id FROM Conference Co JOIN Country C ON Co.country=C.country_id JOIN State_conference S ON CO.state_conference_id=S.state_conference_id WHERE S.state_conference_name='COMPLETED'
 /*select u.user_id, u.first_name, u.last_name, u.email, u.phone_number, u.username ,u.password, u.birthdate, u.Address,c.country_name, u.picture, u.isAdmin ,'Role'= (case
 					when u.user_id in (select user_id from Participant) then 'Participant'
 					when u.user_id in (select user_id from Searcher) then 'Searcher'
@@ -265,8 +266,14 @@ GO
 					from Users u, Country c
             WHERE email = ? AND u.nationality = c.country_id
 			go*/
-				select * from conference
-			insert into Protractor(user_id) values(2)
+
+			UPDATE Conference
+                SET title='ff', country=2, address='ff', min_participants=4, max_participants=6,
+                    organizer_id=1, start_date='11-11-2022', state_conference_id=2, end_date='12-12-2022'
+                WHERE conference_id=1
+
+				select * from Article
+			insert into Searcher(user_id) values(1)
 
 			SELECT u.user_id, u.first_name, u.last_name, u.email, u.phone_number, u.username, u.password, u.birthdate, u.Address, c.country_name, u.picture, u.isAdmin,
     'Role' = (CASE

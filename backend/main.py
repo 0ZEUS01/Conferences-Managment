@@ -437,20 +437,31 @@ async def create_submissions(c: Create_Submissions):
         cursor.execute(
             """
                 INSERT INTO Article (article_title, article_content,searcher_id)
+                OUTPUT inserted.*
                 VALUES (?, ?, ?)
-                INSERT INTO Submission(submission_date, conference_id, article_id, report_id)
-                VALUES(?, ?, ?, ?)
             """,
             (
                 c.article_title,
                 c.article_content,
                 c.searcher_id,
-                c.submission_date,
-                c.conference_id,
-                c.article_id,
-                c.report_id,
             ),
         )
+        article_id = cursor.fetchone()[0]
+        today = datetime.now().date()
+
+        cursor.execute(
+            """
+                INSERT INTO Submission(submission_date, conference_id, article_id, report_id)
+                VALUES(?, ?, ?, ?)
+            """,
+            (
+                today,
+                c.conference_id,
+                article_id,
+                None,
+            ),
+        )
+
 
         conn.commit()
         return {"message": "Submission registered successfully"}

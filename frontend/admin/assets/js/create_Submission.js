@@ -1,6 +1,8 @@
 let formCreateArticle = document.getElementById("formCreateArticle");
 let uploadInput = document.getElementById("upload");
-let uploadButton = document.querySelector(".btn.btn-primary.me-2.mb-4 span");
+let changeName = document.getElementById("changeName");
+const selectedConference = JSON.parse(localStorage.getItem("selectedConference"));
+document.querySelector("#title").innerHTML = selectedConference.title;
 
 formCreateArticle.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -13,10 +15,10 @@ formCreateArticle.addEventListener("submit", async (e) => {
         return false; // Prevent form submission
     }
 
-    // Retrieve the user ID from local storage
+    // Retrieve the user ID and conference ID from local storage
     let userId = localStorage.getItem("user_id");
+    let conferenceId = selectedConference.conference_id;
 
-    // Read the file content as base64
     let reader = new FileReader();
     reader.onloadend = async function () {
         let base64Content = reader.result.split(",")[1]; // Extract the base64 content
@@ -25,7 +27,11 @@ formCreateArticle.addEventListener("submit", async (e) => {
         const requestBody = {
             article_title: articleTitle,
             article_content: base64Content,
-            searcher_id: parseInt(userId),
+            searcher_id: userId,
+            submission_date: 0, // The endpoint will handle the submission date
+            conference_id: conferenceId,
+            article_id: 0, // Will be populated from the server response
+            report_id: 0, // Set to 0 by default
         };
 
         try {
@@ -39,19 +45,20 @@ formCreateArticle.addEventListener("submit", async (e) => {
 
             if (response.ok) {
                 let data = await response.json();
-                console.log(data); // Log the response data for debugging
-                // Add any further actions you want to perform after successful article creation
+                console.log(data);
+                alert("The Article have been posted")
             } else {
                 throw new Error(response.status);
             }
         } catch (error) {
-            console.error("Article creation request failed:", error);
+            console.error("Article and submission creation request failed:", error);
         }
     };
+
     reader.readAsDataURL(articleContent); // Read the file as data URL
 });
 
 uploadInput.addEventListener("change", function () {
     var fileName = this.files[0] ? this.files[0].name : "No file selected";
-    uploadButton.textContent = fileName;
+    changeName.textContent = fileName;
 });

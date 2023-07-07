@@ -124,8 +124,8 @@
                         <div class="navbar-nav align-items-center">
                             <div class="nav-item d-flex align-items-center">
                                 <i class="bx bx-search fs-4 lh-0"></i>
-                                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
-                                    aria-label="Search..." />
+                                <input type="text" class="form-control border-0 shadow-none" id="searchBar"
+                                    placeholder="Search..." aria-label="Search..." />
                             </div>
                         </div>
                         <!-- /Search -->
@@ -137,8 +137,7 @@
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
                                     data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        <img src="../admin/assets/img/avatars/1.png" alt
-                                            class="w-px-40 h-auto rounded-circle" />
+                                        <img id="profilePicture" src="" class="w-px-40 h-auto rounded-circle" />
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -147,13 +146,13 @@
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-                                                        <img src="../admin/assets/img/avatars/1.png" alt
+                                                        <img id="profilePictureDropdown" src=""
                                                             class="w-px-40 h-auto rounded-circle" />
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <span class="fw-semibold d-block">John Doe</span>
-                                                    <small class="text-muted">Searcher</small>
+                                                    <span class="fw-semibold d-block" id="username">John Doe</span>
+                                                    <small class="text-muted">Admin</small>
                                                 </div>
                                             </div>
                                         </a>
@@ -162,7 +161,7 @@
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" href="../admin/searcher_profile.html">
+                                        <a class="dropdown-item" href="../admin/organizer_profile.html">
                                             <i class="bx bx-user me-2"></i>
                                             <span class="align-middle">My Profile</span>
                                         </a>
@@ -175,11 +174,12 @@
                                     </li>
                                 </ul>
                             </li>
+
+
                             <!--/ User -->
                         </ul>
                     </div>
-                </nav>
-
+                    </nav>
                 <!-- / Navbar -->
 
                 <!-- Content wrapper -->
@@ -352,6 +352,7 @@
 
                 <script src="../admin/assets/vendor/js/menu.js"></script>
                 <!-- endbuild -->
+                <script src="../admin/assets/js/showUserPicture.js"></script>
 
                 <!-- Vendors JS -->
 

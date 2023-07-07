@@ -40,6 +40,7 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../admin/assets/js/config.js"></script>
+
 </head>
 
 <body background="../admin/assets/img/backgrounds/meetings-page-bg.jpg">
@@ -133,8 +134,8 @@
                         <div class="navbar-nav align-items-center">
                             <div class="nav-item d-flex align-items-center">
                                 <i class="bx bx-search fs-4 lh-0"></i>
-                                <input type="text" class="form-control border-0 shadow-none" id="searchBar" placeholder="Search..."
-                                    aria-label="Search..." />
+                                <input type="text" class="form-control border-0 shadow-none" id="searchBar"
+                                    placeholder="Search..." aria-label="Search..." />
                             </div>
                         </div>
                         <!-- /Search -->
@@ -143,9 +144,10 @@
 
                             <!-- User -->
                             <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
+                                    data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        <img id="profilePicture" src="../admin/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                                        <img id="profilePicture" src="" class="w-px-40 h-auto rounded-circle" />
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -154,7 +156,8 @@
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-                                                        <img id="profilePictureDropdown" src="../admin/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                                                        <img id="profilePictureDropdown" src=""
+                                                            class="w-px-40 h-auto rounded-circle" />
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
@@ -173,7 +176,7 @@
                                             <span class="align-middle">My Profile</span>
                                         </a>
                                     </li>
-                            
+
                                     <li>
                                         <a class="dropdown-item" href="../admin/login.html">
                                             <i class="bx bx-power-off me-2"></i>
@@ -182,7 +185,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            
+
                             <!--/ User -->
                         </ul>
                     </div>
@@ -354,7 +357,19 @@
 
                 <!-- Page JS -->
                 <script src="../admin/assets/js/manage_confereneces.js"></script>
+                <script>
+                    // Retrieve the profile picture from local storage
+                    var pictureBytes = localStorage.getItem('picture');
 
+                    // Convert the byte array to a Blob object
+                    var pictureBlob = new Blob([new Uint8Array(pictureBytes)], { type: 'image/png' });
+
+                    // Create a URL for the Blob object
+                    var pictureUrl = URL.createObjectURL(pictureBlob);
+
+                    // Set the source of the profile picture dropdown image
+                    document.getElementById('profilePictureDropdown').src = pictureUrl;
+                </script>
                 <!-- Place this tag in your head or just before your close body tag. -->
                 <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>

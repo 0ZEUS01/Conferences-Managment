@@ -139,10 +139,6 @@ $(document).ready(function () {
                     return title.includes(searchQuery);
                 });
             }
-            var profilePicture = localStorage.getItem("profilePicture");
-
-            // Update the profile picture in the dropdown menu
-            $(".avatar img").attr("src", profilePicture);
         },
         error: function (xhr, status, error) {
             // Handle the error response

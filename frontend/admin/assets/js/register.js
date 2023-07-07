@@ -24,9 +24,10 @@ registerForm.addEventListener("submit", (e) => {
 
 function handleFileReadCompletion(event) {
     let pictureBytes;
+
     if (event instanceof Blob) {
         let reader = new FileReader();
-        reader.onloadend = () => {
+        reader.onloadend = function () {
             pictureBytes = new Uint8Array(reader.result);
             handleFileRead(pictureBytes);
         };
@@ -43,7 +44,8 @@ function handleFileReadCompletion(event) {
 }
 
 
-function handleFileRead(pictureBytes) { 
+
+function handleFileRead(pictureBytes) {
     let first_name = document.getElementById("FirstName").value;
     let last_name = document.getElementById("LastName").value;
     let PhoneNumber = document.getElementById("PhoneNumber").value;
@@ -78,7 +80,20 @@ function handleFileRead(pictureBytes) {
     }
 
     // Convert pictureBytes to base64-encoded string
-    let pictureBase64 = btoa(String.fromCharCode.apply(null, pictureBytes));
+    function convertBytesToBase64(pictureBytes) {
+        var CHUNK_SIZE = 65536; // Chunk size (64 KB)
+
+        var base64Parts = [];
+        for (var i = 0; i < pictureBytes.length; i += CHUNK_SIZE) {
+            var chunk = pictureBytes.subarray(i, i + CHUNK_SIZE);
+            base64Parts.push(String.fromCharCode.apply(null, chunk));
+        }
+
+        return btoa(base64Parts.join(''));
+    }
+
+    // Usage in your code
+    let pictureBase64 = convertBytesToBase64(pictureBytes);
 
     // Create an object with the request body
     const requestBody = {

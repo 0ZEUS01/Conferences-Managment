@@ -36,7 +36,8 @@ def get_countries():
     with lock:
         try:
             cursorCountries = conn.cursor()
-            cursorCountries.execute("SELECT country_id, country_name FROM Country")
+            cursorCountries.execute(
+                "SELECT country_id, country_name FROM Country")
             rows = cursorCountries.fetchall()
 
             countries = []
@@ -59,7 +60,8 @@ def get_state():
     with lock:
         try:
             cursorState = conn.cursor()
-            cursorState.execute("SELECT state_conference_id, state_conference_name FROM State_conference")
+            cursorState.execute(
+                "SELECT state_conference_id, state_conference_name FROM State_conference")
             rows = cursorState.fetchall()
 
             states = []
@@ -107,6 +109,7 @@ def get_conference():
         finally:
             cursorConference.close()
 
+
 @app.get("/get_Completedconferences")
 def get_conference():
     with lock:
@@ -136,6 +139,7 @@ def get_conference():
 
         finally:
             cursorConference.close()
+
 
 @app.get("/get_Endedconferences")
 def get_conference():
@@ -167,6 +171,7 @@ def get_conference():
         finally:
             cursorConference.close()
 
+
 @app.get("/get_Canceledconferences")
 def get_conference():
     with lock:
@@ -196,6 +201,38 @@ def get_conference():
 
         finally:
             cursorConference.close()
+
+
+@app.get("/get_Scheduledconferences")
+def get_conference():
+    with lock:
+        try:
+            cursorConference = conn.cursor()
+            cursorConference.execute("SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants, Co.max_participants, S.state_conference_name, Co.address, Co.organizer_id,Co.conference_id FROM Conference Co JOIN Country C ON Co.country=C.country_id JOIN State_conference S ON CO.state_conference_id=S.state_conference_id WHERE S.state_conference_name='SCHEDULED'")
+            rows = cursorConference.fetchall()
+
+            conferences = []
+
+            for row in rows:
+                conference_data = {
+                    "title": row[0],
+                    "country_name": row[1],
+                    "start_date": row[2],
+                    "end_date": row[3],
+                    "min_participants": row[4],
+                    "max_participants": row[5],
+                    "state_conference_name": row[6],
+                    "Address": row[7],
+                    "organizer_id": row[8],
+                    "conference_id": row[9]
+                }
+                conferences.append(conference_data)
+
+            return {"conference": conferences}
+
+        finally:
+            cursorConference.close()
+
 
 @app.post("/register")
 async def register(user: Users_Register):
@@ -381,6 +418,7 @@ async def edit_conference(conference: Edit_conference):
     except pyodbc.Error as e:
         print(e)
         raise HTTPException(status_code=500, detail="Database error")
+
 
 @app.post("/create_submissions")
 async def create_submissions(c: Create_Submissions):

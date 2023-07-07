@@ -1,12 +1,16 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 import pyodbc
 from model import *
 from auth import *
-
+from fastapi import FastAPI, HTTPException, status
+from fastapi.responses import JSONResponse
+import threading
 
 app = FastAPI()
 auth_handler = AuthHandler()
+lock = threading.Lock()
+
 # Connect to SQL Server
 conn = pyodbc.connect(
     "Driver={ODBC Driver 17 for SQL Server};"
@@ -29,77 +33,109 @@ app.add_middleware(
 
 @app.get("/country")
 def get_countries():
-    try:
-        cursorCountries = conn.cursor()
-        cursorCountries.execute("SELECT country_id, country_name FROM Country")
-        rows = cursorCountries.fetchall()
+    with lock:
+        try:
+            cursorCountries = conn.cursor()
+            cursorCountries.execute("SELECT country_id, country_name FROM Country")
+            rows = cursorCountries.fetchall()
 
-        countries = []
+            countries = []
 
-        for row in rows:
-            country_data = {
-                "country_id": row[0],
-                "country_name": row[1]
-            }
-            countries.append(country_data)
+            for row in rows:
+                country_data = {
+                    "country_id": row[0],
+                    "country_name": row[1]
+                }
+                countries.append(country_data)
 
-        return {"country": countries}
+            return {"country": countries}
 
-    finally:
-        cursorCountries.close()
+        finally:
+            cursorCountries.close()
 
 
 @app.get("/state")
 def get_state():
-    try:
-        cursorState = conn.cursor()
-        cursorState.execute("SELECT state_conference_id, state_conference_name FROM State_conference")
-        rows = cursorState.fetchall()
+    with lock:
+        try:
+            cursorState = conn.cursor()
+            cursorState.execute("SELECT state_conference_id, state_conference_name FROM State_conference")
+            rows = cursorState.fetchall()
 
-        states = []
+            states = []
 
-        for row in rows:
-            state_data = {
-                "state_conference_id": row[0],
-                "state_conference_name": row[1]
-            }
-            states.append(state_data)
+            for row in rows:
+                state_data = {
+                    "state_conference_id": row[0],
+                    "state_conference_name": row[1]
+                }
+                states.append(state_data)
 
-        return {"state": states}
+            return {"state": states}
 
-    finally:
-        cursorState.close()
+        finally:
+            cursorState.close()
 
 
 @app.get("/get_conference")
 def get_conference():
-    try:
-        cursorConference = conn.cursor()
-        cursorConference.execute("SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants, Co.max_participants, S.state_conference_name, Co.address, Co.organizer_id,Co.conference_id FROM Conference Co JOIN Country C ON Co.country=C.country_id JOIN State_conference S ON CO.state_conference_id=S.state_conference_id")
-        rows = cursorConference.fetchall()
+    with lock:
+        try:
+            cursorConference = conn.cursor()
+            cursorConference.execute("SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants, Co.max_participants, S.state_conference_name, Co.address, Co.organizer_id,Co.conference_id FROM Conference Co JOIN Country C ON Co.country=C.country_id JOIN State_conference S ON CO.state_conference_id=S.state_conference_id")
+            rows = cursorConference.fetchall()
 
-        conferences = []
+            conferences = []
 
-        for row in rows:
-            conference_data = {
-                "title": row[0],
-                "country_name": row[1],
-                "start_date": row[2],
-                "end_date": row[3],
-                "min_participants": row[4],
-                "max_participants": row[5],
-                "state_conference_name": row[6],
-                "Address": row[7],
-                "organizer_id": row[8],
-                "conference_id": row[9]
-            }
-            conferences.append(conference_data)
+            for row in rows:
+                conference_data = {
+                    "title": row[0],
+                    "country_name": row[1],
+                    "start_date": row[2],
+                    "end_date": row[3],
+                    "min_participants": row[4],
+                    "max_participants": row[5],
+                    "state_conference_name": row[6],
+                    "Address": row[7],
+                    "organizer_id": row[8],
+                    "conference_id": row[9]
+                }
+                conferences.append(conference_data)
 
-        return {"conference": conferences}
+            return {"conference": conferences}
 
-    finally:
-        cursorConference.close()
+        finally:
+            cursorConference.close()
 
+@app.get("/get_Completedconferences")
+def get_conference():
+    with lock:
+        try:
+            cursorConference = conn.cursor()
+            cursorConference.execute("SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants, Co.max_participants, S.state_conference_name, Co.address, Co.organizer_id,Co.conference_id FROM Conference Co JOIN Country C ON Co.country=C.country_id JOIN State_conference S ON CO.state_conference_id=S.state_conference_id WHERE S.state_conference_name='COMPLETED'")
+            rows = cursorConference.fetchall()
+
+            conferences = []
+
+            for row in rows:
+                conference_data = {
+                    "title": row[0],
+                    "country_name": row[1],
+                    "start_date": row[2],
+                    "end_date": row[3],
+                    "min_participants": row[4],
+                    "max_participants": row[5],
+                    "state_conference_name": row[6],
+                    "Address": row[7],
+                    "organizer_id": row[8],
+                    "conference_id": row[9]
+                }
+                conferences.append(conference_data)
+
+            return {"conference": conferences}
+
+        finally:
+            cursorConference.close()
 
 
 @app.post("/register")
@@ -283,6 +319,33 @@ async def edit_conference(conference: Edit_conference):
 
         conn.commit()
         return {"message": "Conference updated successfully"}
+    except pyodbc.Error as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Database error")
+
+
+@app.delete("/delete_conference/{conferenceId}")
+def delete_conference(conferenceId: int):
+    try:
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT COUNT(*) FROM Conference WHERE conference_id = ?",
+            (conferenceId,),
+        )
+        if cursor.fetchone()[0] == 0:
+            raise HTTPException(
+                status_code=404, detail="Conference not found"
+            )
+
+        cursor.execute(
+            "DELETE FROM Conference WHERE conference_id = ?",
+            (conferenceId,),
+        )
+
+        conn.commit()
+
+        return {"message": f"Conference {conferenceId} deleted successfully"}
     except pyodbc.Error as e:
         print(e)
         raise HTTPException(status_code=500, detail="Database error")

@@ -11,7 +11,7 @@ formeditconference.addEventListener("submit", async (e) => {
     let MinPNb = document.getElementById("MinPNb").value;
     let MaxPNb = document.getElementById("MaxPNb").value;
     let country_id = document.getElementById("countryy").value;
-    let state = document.getElementById("statee").value;
+    let state_conference_id = document.getElementById("statee").value;
 
     // Check if any input is empty
     if (
@@ -22,7 +22,7 @@ formeditconference.addEventListener("submit", async (e) => {
         MinPNb.trim() === "" ||
         MaxPNb.trim() === "" ||
         country_id.trim() === "" ||
-        state.trim() === ""
+        state_conference_id.trim() === ""
     ) {
         alert("Please fill in all fields");
         return false;
@@ -38,6 +38,9 @@ formeditconference.addEventListener("submit", async (e) => {
     }
 
     let organizerId = localStorage.getItem("user_id");
+    let conferenceData = JSON.parse(localStorage.getItem("conferenceData"));
+    let conferenceId = conferenceData.conference_id;
+
     // Create an object with the request body
     const requestBody = {
         title: title,
@@ -47,9 +50,11 @@ formeditconference.addEventListener("submit", async (e) => {
         min_participants: parseInt(MinPNb),
         max_participants: parseInt(MaxPNb),
         country: parseInt(country_id),
-        state: parseInt(state), 
+        conference_id: parseInt(conferenceId),
+        state_conference_id: parseInt(state_conference_id),
         organizer_id: parseInt(organizerId),
     };
+
 
     try {
         const response = await fetch("http://127.0.0.1:8000/edit_conference", {
@@ -59,15 +64,19 @@ formeditconference.addEventListener("submit", async (e) => {
             },
             body: JSON.stringify(requestBody),
         });
-
+    
         if (response.ok) {
-            const data = await response.json();
-            // Handle the response data
-            console.log(data);
+            const responseData = await response.json();
+            console.log(responseData); // Log the response data for debugging
+            // Show success alert
+            window.alert("Conference modified successfully");
+            // Redirect to login page
+            window.location.href = "../admin/conferences_management.html";
         } else {
             throw new Error(response.status);
         }
     } catch (error) {
         console.error("Conference modification request failed:", error);
     }
-});
+    
+}); 

@@ -11,38 +11,52 @@ $(document).ready(function () {
 
             // Add new data to the table
             var conferences = response.conference;
-            for (var i = 0; i < conferences.length; i++) {
-                var conf = conferences[i];
-                var row = $("<tr>");
-                row.append($("<td>").text(conf.title));
-                row.append($("<td>").text(conf.country_name));
-                row.append($("<td>").text(conf.start_date + ' | ' + conf.end_date));
-                row.append($("<td>").text(conf.min_participants + ' | ' + conf.max_participants));
+            var filteredConferences = conferences; // Initialize filtered conferences with all conferences
 
-                var stateCell = $("<td>");
-                if (conf.state_conference_name === 'SCHEDULED') {
-                    var badge = $("<span class='badge bg-label-warning me-1'>").text(conf.state_conference_name);
-                    stateCell.append(badge);
-                } else if (conf.state_conference_name === 'Completed') {
-                    var badge = $("<span class='badge bg-label-success me-1'>").text(conf.state_conference_name);
-                    stateCell.append(badge);
-                } else if (conf.state_conference_name === 'Ended') {
-                    var badge = $("<span class='badge bg-label-danger me-1'>").text(conf.state_conference_name);
-                    stateCell.append(badge);
-                } else if (conf.state_conference_name === 'CANCELED') {
-                    var badge = $("<span class='badge bg-label-secondary me-1'>").text(conf.state_conference_name);
-                    stateCell.append(badge);
+            // Function to display conferences based on the filtered list
+            function displayConferences(conferences) {
+                table.empty(); // Clear the table
+
+                for (var i = 0; i < conferences.length; i++) {
+                    var conf = conferences[i];
+                    var row = $("<tr>");
+                    row.append($("<td>").text(conf.title));
+                    row.append($("<td>").text(conf.country_name));
+                    row.append($("<td>").text(conf.start_date + ' | ' + conf.end_date));
+                    row.append($("<td>").text(conf.min_participants + ' | ' + conf.max_participants));
+
+                    var stateCell = $("<td>");
+                    if (conf.state_conference_name === 'SCHEDULED') {
+                        var badge = $("<span class='badge bg-label-warning me-1'>").text(conf.state_conference_name);
+                        stateCell.append(badge);
+                    } else if (conf.state_conference_name === 'Completed') {
+                        var badge = $("<span class='badge bg-label-success me-1'>").text(conf.state_conference_name);
+                        stateCell.append(badge);
+                    } else if (conf.state_conference_name === 'Ended') {
+                        var badge = $("<span class='badge bg-label-danger me-1'>").text(conf.state_conference_name);
+                        stateCell.append(badge);
+                    } else if (conf.state_conference_name === 'CANCELED') {
+                        var badge = $("<span class='badge bg-label-secondary me-1'>").text(conf.state_conference_name);
+                        stateCell.append(badge);
+                    }
+                    row.append(stateCell);
+
+                    var editLink = $('<a class="dropdown-item edit-link" data-bs-toggle="modal" data-bs-target="#editConf"><i class="bx bx-edit-alt me-1"></i> Edit</a>');
+                    editLink.data('conference', conf); // Store the conference data in the link's data attribute
+
+                    var deleteLink = $('<a class="dropdown-item delete-link" href="#"><i class="bx bx-trash me-1"></i> Delete</a>');
+                    deleteLink.data('conferenceId', conf.conference_id); // Store the conference ID in the link's data attribute
+
+                    var dropdownCell = $('<td><div class="dropdown"><button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button><div class="dropdown-menu"></div></div></td>');
+                    dropdownCell.find('.dropdown-menu').append(editLink, deleteLink);
+
+                    row.append(dropdownCell);
+                    table.append(row);
                 }
-                row.append(stateCell);
-
-                var editLink = $('<a class="dropdown-item edit-link" data-bs-toggle="modal" data-bs-target="#editConf"><i class="bx bx-edit-alt me-1"></i> Edit</a>');
-                editLink.data('conference', conf); // Store the conference data in the link's data attribute
-                var dropdownCell = $('<td><div class="dropdown"><button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button><div class="dropdown-menu"></div></div></td>');
-                dropdownCell.find('.dropdown-menu').append(editLink);
-
-                row.append(dropdownCell);
-                table.append(row);
             }
+
+            // Display all conferences initially
+            displayConferences(filteredConferences);
 
             // Event handler for the edit link
             $('.edit-link').click(function () {
@@ -81,6 +95,54 @@ $(document).ready(function () {
                     }
                 }
             });
+
+            // Event handler for the delete link
+            $('.delete-link').click(function (e) {
+                e.preventDefault();
+                var conferenceId = $(this).data('conferenceId');
+                if (confirm("Are you sure you want to delete this conference?")) {
+                    // Perform the delete operation
+                    deleteConference(conferenceId);
+                }
+            });
+
+            // Function to delete a conference
+            function deleteConference(conferenceId) {
+                // Send the delete request to the API
+                $.ajax({
+                    url: "http://127.0.0.1:8000/delete_conference/" + conferenceId,
+                    type: "DELETE",
+                    success: function (response) {
+                        // Handle the successful response
+                        alert("Conference deleted successfully");
+                        // Refresh the page
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle the error response
+                        console.error("Conference deletion request failed:", error);
+                    },
+                });
+            }
+
+            // Event handler for the search bar input
+            $('#searchBar').on('input', function () {
+                var searchQuery = $(this).val().toLowerCase();
+                filteredConferences = filterConferences(searchQuery);
+                displayConferences(filteredConferences);
+            });
+
+            // Function to filter conferences based on the search query
+            function filterConferences(searchQuery) {
+                return conferences.filter(function (conference) {
+                    var title = conference.title.toLowerCase();
+                    return title.includes(searchQuery);
+                });
+            }
+            var profilePicture = localStorage.getItem("profilePicture");
+
+            // Update the profile picture in the dropdown menu
+            $(".avatar img").attr("src", profilePicture);
         },
         error: function (xhr, status, error) {
             // Handle the error response

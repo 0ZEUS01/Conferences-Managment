@@ -1,11 +1,11 @@
 const selectElement = document.getElementById('country');
 
-const fetchCountries = async (selectedId) => {
+const fetchCountries = async () => {
     try {
         const response = await fetch("http://127.0.0.1:8000/country");
         if (response.ok) {
             const data = await response.json();
-            updateOptions(data.country, selectedId);
+            updateOptions(data.country, );
         } else {
             console.error('Failed to fetch countries:', response.status);
         }
@@ -14,7 +14,7 @@ const fetchCountries = async (selectedId) => {
     }
 };
 
-const updateOptions = (countries, selectedId) => {
+const updateOptions = (countries) => {
     selectElement.innerHTML = ''; // Clear existing options
 
     const defaultOption = document.createElement('option');
@@ -36,4 +36,4 @@ const updateOptions = (countries, selectedId) => {
     }
 };
 
-fetchCountries(selectedCountryId);
+fetchCountries();

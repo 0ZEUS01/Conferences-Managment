@@ -106,6 +106,7 @@ CREATE TABLE Article (
     article_id BIGINT IDENTITY,
     article_title NVARCHAR(MAX),
 	article_content VARBINARY(MAX),
+	article_format NVARCHAR(MAX),
 	searcher_id BIGINT,
     CONSTRAINT PK_ARTICLE PRIMARY KEY (article_id),
 	CONSTRAINT FK_SEARCHER_ARTICLE FOREIGN KEY (searcher_id) REFERENCES Searcher(searcher_id)
@@ -136,6 +137,7 @@ GO
 CREATE TABLE Report (
     report_id BIGINT IDENTITY,
 	report_content VARBINARY(MAX),
+	report_format NVARCHAR(MAX),
     CONSTRAINT PK_REPORT PRIMARY KEY (report_id)
 );
 GO
@@ -163,7 +165,6 @@ CREATE TABLE Submission (
 	CONSTRAINT FK_REPORT_SUBMISSION FOREIGN KEY (report_id) REFERENCES Report(report_id)
 );
 GO
-
 
 -- Create Decision table
 CREATE TABLE Decision (

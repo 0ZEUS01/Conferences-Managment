@@ -234,6 +234,40 @@ def get_conference():
             cursorConference.close()
 
 
+@app.get("/get_Articles/{user_id}")
+def get_Articles(user_id: int):
+    with lock:
+        try:
+            cursorArticle = conn.cursor()
+            cursorArticle.execute("""
+                SELECT A.article_id, A.article_title, A.article_content, C.title, D.decision
+                FROM Article A
+                JOIN Submission S ON S.article_id = A.article_id
+                JOIN Conference C ON C.conference_id = S.conference_id
+                LEFT JOIN OrganizerDecision OD ON S.submission_id = OD.submission_id
+                LEFT JOIN Decision D ON D.decision_id = OD.decision_id
+                WHERE A.searcher_id = (SELECT searcher_id FROM Searcher WHERE user_id = ?)
+            """, (user_id,))
+            rows = cursorArticle.fetchall()
+
+            articles = []
+
+            for row in rows:
+                conference_data = {
+                    "article_id": row[0],
+                    "article_title": row[1],
+                    "article_content": row[2],
+                    "title": row[3],
+                    "decision": row[4],
+                }
+                articles.append(conference_data)
+
+            return {"article": articles}
+
+        finally:
+            cursorArticle.close()
+
+
 @app.post("/register")
 async def register(user: Users_Register):
     try:
@@ -420,8 +454,56 @@ async def edit_conference(conference: Edit_conference):
         raise HTTPException(status_code=500, detail="Database error")
 
 
-@app.post("/create_submissions")
-async def create_submissions(c: Create_Submissions):
+@app.post("/create_submissions/{user_id}")
+async def create_submissions(c: Create_Submissions, user_id: int):
+    try:
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT COUNT(*) FROM Article WHERE article_title = ?",
+            (c.article_title,)
+        )
+        if cursor.fetchone()[0] > 0:
+            raise HTTPException(
+                status_code=400, detail="An Article with the same title is already registered"
+            )
+
+        cursor.execute(
+            """
+                SELECT searcher_id FROM Searcher WHERE user_id = ?
+            """,
+            (user_id,)
+        )
+        searcher_id = cursor.fetchone()[0]
+
+        cursor.execute(
+            """
+                INSERT INTO Article (article_title, article_content, searcher_id)
+                OUTPUT inserted.article_id
+                VALUES (?, ?, ?)
+            """,
+            (c.article_title, c.article_content, searcher_id)
+        )
+        article_id = cursor.fetchone()[0]
+
+        today = datetime.now().date()
+
+        cursor.execute(
+            """
+                INSERT INTO Submission (submission_date, conference_id, article_id, report_id)
+                VALUES (?, ?, ?, ?)
+            """,
+            (today, c.conference_id, article_id, None)
+        )
+
+        conn.commit()
+        return {"message": "Submission registered successfully"}
+    except pyodbc.Error as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Database error")
+
+@app.post("/update_submissions1")
+async def update_submissions(c: Searcher_Edit_Articles1):
     try:
         cursor = conn.cursor()
 
@@ -431,40 +513,55 @@ async def create_submissions(c: Create_Submissions):
         )
         if cursor.fetchone()[0] > 0:
             raise HTTPException(
-                status_code=400, detail="An Article with same title already registered"
+                status_code=400, detail="An Article with same title already exist"
             )
 
         cursor.execute(
             """
-                INSERT INTO Article (article_title, article_content,searcher_id)
-                OUTPUT inserted.*
-                VALUES (?, ?, ?)
+                UPDATE Article SET article_title = ?, article_content = ?
+                WHERE article_id = ?
             """,
             (
                 c.article_title,
                 c.article_content,
-                c.searcher_id,
+                c.article_id,
             ),
         )
-        article_id = cursor.fetchone()[0]
-        today = datetime.now().date()
+
+        conn.commit()
+        return {"message": "Article modified successfully"}
+    except pyodbc.Error as e:
+        print(e)
+        raise HTTPException(status_code=500, detail='Database error')
+
+
+@app.post("/update_submissions2")
+async def update_submissions(c: Searcher_Edit_Articles2):
+    try:
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT COUNT(*) FROM Article WHERE article_title = ?",
+            (c.article_title)
+        )
+        if cursor.fetchone()[0] > 0:
+            raise HTTPException(
+                status_code=400, detail="An Article with same title already exist"
+            )
 
         cursor.execute(
             """
-                INSERT INTO Submission(submission_date, conference_id, article_id, report_id)
-                VALUES(?, ?, ?, ?)
+                UPDATE Article SET article_title = ?
+                WHERE article_id = ?
             """,
             (
-                today,
-                c.conference_id,
-                article_id,
-                None,
+                c.article_title,
+                c.article_id,
             ),
         )
 
-
         conn.commit()
-        return {"message": "Submission registered successfully"}
+        return {"message": "Article modified successfully"}
     except pyodbc.Error as e:
         print(e)
         raise HTTPException(status_code=500, detail='Database error')
@@ -492,6 +589,37 @@ def delete_conference(conferenceId: int):
         conn.commit()
 
         return {"message": f"Conference {conferenceId} deleted successfully"}
+    except pyodbc.Error as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Database error")
+
+
+@app.delete("/delete_submissions/{article_Id}")
+def delete_submissions(article_Id: int):
+    try:
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT COUNT(*) FROM Article WHERE article_id = ?",
+            (article_Id,),
+        )
+        if cursor.fetchone()[0] == 0:
+            raise HTTPException(
+                status_code=404, detail="Conference not found"
+            )
+
+        cursor.execute(
+            "DELETE FROM Submission WHERE article_Id = ?",
+            (article_Id,),
+        )
+        cursor.execute(
+            "DELETE FROM Article WHERE article_Id = ?",
+            (article_Id,),
+        )
+
+        conn.commit()
+
+        return {"message": f"Conference {article_Id} deleted successfully"}
     except pyodbc.Error as e:
         print(e)
         raise HTTPException(status_code=500, detail="Database error")

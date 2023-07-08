@@ -57,6 +57,14 @@ class Create_Submissions(BaseModel):
     article_id: int
     report_id: int
 
+class Searcher_Edit_Articles1(BaseModel):
+    article_id: int
+    article_title: str
+    article_content: bytes
+
+class Searcher_Edit_Articles2(BaseModel):
+    article_id: int
+    article_title: str
 
 class Organizer(BaseModel):
     organizer_id: int

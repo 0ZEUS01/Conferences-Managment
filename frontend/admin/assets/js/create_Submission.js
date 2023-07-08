@@ -27,15 +27,15 @@ formCreateArticle.addEventListener("submit", async (e) => {
         const requestBody = {
             article_title: articleTitle,
             article_content: base64Content,
-            searcher_id: userId,
-            submission_date: 0, // The endpoint will handle the submission date
-            conference_id: conferenceId,
-            article_id: 0, // Will be populated from the server response
-            report_id: 0, // Set to 0 by default
+            searcher_id: parseInt(userId), // Convert to integer
+            submission_date: "string", // Placeholder value
+            conference_id: parseInt(conferenceId), // Convert to integer
+            article_id: 0, // Placeholder value
+            report_id: 0, // Placeholder value
         };
 
         try {
-            let response = await fetch("http://127.0.0.1:8000/create_submissions", {
+            let response = await fetch(`http://127.0.0.1:8000/create_submissions/${userId}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -46,7 +46,7 @@ formCreateArticle.addEventListener("submit", async (e) => {
             if (response.ok) {
                 let data = await response.json();
                 console.log(data);
-                alert("The Article have been posted")
+                alert("The article has been posted.");
             } else {
                 throw new Error(response.status);
             }

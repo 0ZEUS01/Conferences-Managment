@@ -267,12 +267,16 @@ SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants
             WHERE email = ? AND u.nationality = c.country_id
 			go*/
 
+			SELECT A.article_id, A.article_title, A.article_content, C.title, D.decision 
+			FROM Article A JOIN Submission S ON S.article_id = A.article_id  JOIN Conference C ON C.conference_id=S.conference_id 
+			LEFT JOIN OrganizerDecision OD ON S.submission_id=OD.submission_id LEFT JOIN Decision D ON D.decision_id=OD.decision_id
+
 			UPDATE Conference
                 SET title='ff', country=2, address='ff', min_participants=4, max_participants=6,
                     organizer_id=1, start_date='11-11-2022', state_conference_id=2, end_date='12-12-2022'
                 WHERE conference_id=1
 
-				select * from Conference
+				select * from Submission
 			insert into Searcher(user_id) values(1)
 
 			SELECT u.user_id, u.first_name, u.last_name, u.email, u.phone_number, u.username, u.password, u.birthdate, u.Address, c.country_name, u.picture, u.isAdmin,

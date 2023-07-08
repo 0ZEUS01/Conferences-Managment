@@ -276,8 +276,8 @@ SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants
                     organizer_id=1, start_date='11-11-2022', state_conference_id=2, end_date='12-12-2022'
                 WHERE conference_id=1
 
-				select * from Submission
-			insert into Searcher(user_id) values(1)
+				select * from Conference 
+			insert into Searcher(user_id) values(6)
 
 			SELECT u.user_id, u.first_name, u.last_name, u.email, u.phone_number, u.username, u.password, u.birthdate, u.Address, c.country_name, u.picture, u.isAdmin,
     'Role' = (CASE

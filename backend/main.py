@@ -304,6 +304,46 @@ def get_Articles():
             cursorArticle.close()
 
 
+@app.get("/show_Reports/{user_id}")
+def get_reports(user_id: int):
+    with lock:
+        try:
+            cursorReport = conn.cursor()
+            cursorReport.execute("""
+                SELECT R.report_id, R.report_content, U.first_name, U.last_name, C.title, A.article_title, A.article_content, D.decision FROM Report R 
+				JOIN ReportWrittenBy RW ON RW.report_id = R.report_id
+				JOIN Protractor P ON P.protractor_id = RW.protractor_id
+				JOIN Users U ON P.user_id = U.user_id
+				JOIN Submission S ON S.report_id = R.report_id
+				JOIN Conference C ON C.conference_id = S.conference_id
+				JOIN Article A ON A.article_id = S.article_id
+				LEFT JOIN OrganizerDecision OD ON S.submission_id = OD.submission_id
+				LEFT JOIN Decision D ON D.decision_id = OD.decision_id
+                WHERE P.protractor_id = (SELECT protractor_id FROM Protractor WHERE user_id = ?)
+            """, (user_id,))
+            rows = cursorReport.fetchall()
+
+            reports = []
+
+            for row in rows:
+                report_data = {
+                    "report_id": row[0],
+                    "report_content": row[1],
+                    "protractor_first_name": row[2],
+                    "protractor_last_name": row[3],
+                    "conference_title": row[4],
+                    "article_title": row[5],
+                    "article_content": row[6],
+                    "decision": row[7]
+                }
+                reports.append(report_data)
+
+            return {"report": reports}
+
+        finally:
+            cursorReport.close()
+
+
 @app.post("/register")
 async def register(user: Users_Register):
     try:
@@ -705,6 +745,30 @@ def delete_submissions(article_Id: int):
     except pyodbc.Error as e:
         print(e)
         raise HTTPException(status_code=500, detail="Database error")
+
+
+@app.post("/edit_report")
+async def update_report(c: Protractor_Edit_Report):
+    try:
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+                UPDATE Report SET report_content = ?
+                WHERE report_id = ?
+            """,
+            (
+                c.report_content,
+                c.report_id,
+            ),
+        )
+
+        conn.commit()
+        return {"message": "Report modified successfully"}
+    except pyodbc.Error as e:
+        print(e)
+        raise HTTPException(status_code=500, detail='Database error')
+
 
 
 if __name__ == "__main__":

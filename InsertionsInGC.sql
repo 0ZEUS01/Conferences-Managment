@@ -280,8 +280,19 @@ SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants
 JOIN Submission Su ON Su.article_id=A.article_id JOIN Conference C ON C.conference_id = Su.conference_id JOIN Country Co ON C.country = Co.country_id
 
 
-				select * from Conference 
-			insert into Protractor(user_id) values(6)
+				select * from Report
+			insert into Protractor(user_id) values(3)
+
+								SELECT R.report_id, R.report_content, U.first_name, U.last_name, C.title, A.article_title, A.article_content, D.decision FROM Report R 
+					JOIN ReportWrittenBy RW ON RW.report_id = R.report_id
+					JOIN Protractor P ON P.protractor_id = RW.protractor_id
+					JOIN Users U ON P.user_id = U.user_id
+					JOIN Submission S ON S.report_id = R.report_id
+					JOIN Conference C ON C.conference_id = S.conference_id
+					JOIN Article A ON A.article_id = S.article_id
+					LEFT JOIN OrganizerDecision OD ON S.submission_id = OD.submission_id
+					LEFT JOIN Decision D ON D.decision_id = OD.decision_id
+
 
 			SELECT u.user_id, u.first_name, u.last_name, u.email, u.phone_number, u.username, u.password, u.birthdate, u.Address, c.country_name, u.picture, u.isAdmin,
     'Role' = (CASE
@@ -304,6 +315,11 @@ FROM Users u
 JOIN Country c ON u.nationality = c.country_id 
 SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants, Co.max_participants, S.state_conference_name FROM Conference Co JOIN Country C ON Co.country=C.country_id JOIN State_conference S ON CO.state_conference_id=S.state_conference_id
 
+                SELECT protractor_id FROM Protractor WHERE user_id = 6
+
+						INSERT INTO Report (report_content) VALUES('0')
+		INSERT INTO ReportWrittenBy(protractor_id, report_id) VALUES (0, 0)
+		UPDATE Submission SET report_id = 0 WHERE article_id = 0
 
 			/*INSERT INTO Users (first_name, last_name, email)
 			OUTPUT inserted.*

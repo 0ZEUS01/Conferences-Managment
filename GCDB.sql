@@ -153,6 +153,7 @@
 		);
 		GO
 
+	
 		-- Create Submission table
 		CREATE TABLE Submission (
 			submission_id BIGINT IDENTITY,
@@ -166,6 +167,8 @@
 			CONSTRAINT FK_REPORT_SUBMISSION FOREIGN KEY (report_id) REFERENCES Report(report_id)
 		);
 		GO
+
+
 
 		-- Create Decision table
 		CREATE TABLE Decision (

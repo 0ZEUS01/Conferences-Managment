@@ -51,7 +51,7 @@
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme"
                 style="background-image: url(../admin/assets/img/backgrounds/service-item-bg.jpg);">
                 <div class="app-brand demo">
-                    <a href="../landing/index_searcher.html" class="app-brand-link gap-2">
+                    <a href="../landing/index_protractor.html" class="app-brand-link gap-2">
                         <img src="../landing/assets/images/landingLogo.png" alt="logo" width="200px">
                     </a>
 
@@ -66,20 +66,9 @@
                     <li class="menu-header small text-uppercase">
                         <span class="menu-header-text"></span>
                     </li>
+
                     <li class="menu-item">
-                        <a href="create_article.html" class="menu-link">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class=" menu-icon bi bi-file-earmark-plus" viewBox="0 0 16 16">
-                                <path
-                                    d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z" />
-                                <path
-                                    d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
-                            </svg>
-                            <div data-i18n="Analytics">Post new Article</div>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="searcher_articles.html" class="menu-link">
+                        <a href="protractor_history.html" class="menu-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="menu-icon bi bi-clock-history" viewBox="0 0 16 16">
                                 <path
@@ -88,7 +77,7 @@
                                 <path
                                     d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z" />
                             </svg>
-                            <div data-i18n="Analytics">Your submissions</div>
+                            <div data-i18n="Analytics">History</div>
                         </a>
                     </li>
                 </ul>
@@ -126,7 +115,7 @@
                                                 </div>
                                                 <div class="flex-grow-1">
                                                     <span class="fw-semibold d-block" id="username">John Doe</span>
-                                                    <small class="text-muted">Searcher</small>
+                                                    <small class="text-muted">Protractor</small>
                                                 </div>
                                             </div>
                                         </a>
@@ -164,45 +153,22 @@
                             <div class="col-xl">
                                 <div class="card mb-4">
                                     <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="mb-0">Article for <span id="title"></span> Conference</h5>
+                                        <h5 class="mb-0">Report on <span id="articletitle"></span> related to <span id="relatedTo"></span> Conference</h5>
                                     </div>
                                     <div class="card-body">
-                                        <form id="formCreateArticle" action="/create_submissions" method="POST">
-                                            <div class="col-md-6" style="display: flex; gap: 10px; width: auto;">
-                                                <div class="mb-3" style="flex: 1;">
-                                                    <label class="form-label" for="article_title">Article
-                                                        title</label>
-                                                    <div class="input-group input-group-merge">
-                                                        <span id="article_title2" class="input-group-text">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                                height="16" fill="currentColor"
-                                                                class="bi bi-chat-left-dots" viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
-                                                                <path
-                                                                    d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                                                            </svg>
-                                                        </span>
-                                                        <input type="text" id="article_title"
-                                                            class="form-control phone-mask"
-                                                            placeholder="Enter your Article title"
-                                                            aria-label="658 799 8941"
-                                                            aria-describedby="article_title2" />
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <form id="formCreateReport" action="/create_report" method="POST">
 
                                             <label for="upload" class="btn btn-primary me-2 mb-4"
                                                 style="background-color: #bd3438; border: #f8020b;">
                                                 <span class="d-none d-sm-block" id="changeName">Upload your
-                                                    Article</span>
+                                                    Report <span id="article"></span></span>
                                                 <i class="bx bx-upload d-block d-sm-none"></i>
                                                 <input type="file" id="upload" class="account-file-input" hidden
                                                     accept=".pdf,.doc,.docx" />
                                             </label>
                                             <br>
                                             <button type="submit" class="btn btn-primary"
-                                                style="background-color: #bd3438; border: #f8020b;">Post</button>
+                                                style="background-color: #bd3438; border: #f8020b;">Post review</button>
                                         </form>
                                     </div>
                                 </div>
@@ -244,7 +210,7 @@
                 <script src="../admin/assets/js/showUserPicture.js"></script>
 
                 <!-- Vendors JS -->
-                <script src="../admin/assets/js/create_Submission.js"></script>
+                <script src="../admin/assets/js/create_report.js"></script>
                 <!-- Main JS -->
                 <script src="../admin/assets/js/main.js"></script>
 

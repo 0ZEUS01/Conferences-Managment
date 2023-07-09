@@ -66,11 +66,14 @@ class Searcher_Edit_Articles2(BaseModel):
     article_id: int
     article_title: str
 
+class Create_Report(BaseModel):
+    report_id: int
+    report_content: bytes
+    article_id : int
+
 class Organizer(BaseModel):
     organizer_id: int
     user_id: int
-
-
 
 class Participant(BaseModel):
     participant_id: int

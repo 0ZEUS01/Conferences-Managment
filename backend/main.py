@@ -604,6 +604,51 @@ async def update_submissions(c: Searcher_Edit_Articles2):
         raise HTTPException(status_code=500, detail='Database error')
 
 
+@app.post("/create_report/{user_id}")
+async def create_report(c: Create_Report, user_id: int):
+    try:
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+		        INSERT INTO Report (report_content) 
+                OUTPUT inserted.report_id
+                VALUES(?)
+            """,
+            (c.report_content,)
+        )
+        report_id = cursor.fetchone()[0]
+
+        cursor.execute(
+            """
+                SELECT protractor_id FROM Protractor WHERE user_id = ?
+            """,
+            (user_id,)
+        )
+        protractor_id = cursor.fetchone()[0]
+
+        cursor.execute(
+            """
+		        INSERT INTO ReportWrittenBy(protractor_id, report_id) 
+                VALUES (?, ?)
+            """,
+            (protractor_id, report_id,)
+        )
+
+        cursor.execute(
+            """
+		        UPDATE Submission 
+                SET report_id = ? WHERE article_id = ?
+            """,
+            (report_id, c.article_id,)
+        )
+        conn.commit()
+        return {"message": "Report registered successfully"}
+    except pyodbc.Error as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Database error")
+
+
 @app.delete("/delete_conference/{conferenceId}")
 def delete_conference(conferenceId: int):
     try:

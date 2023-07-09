@@ -47,6 +47,7 @@ formCreateArticle.addEventListener("submit", async (e) => {
                 let data = await response.json();
                 console.log(data);
                 alert("The article has been posted.");
+                window.location.href = "../admin/searcher_articles.html";
             } else {
                 throw new Error(response.status);
             }

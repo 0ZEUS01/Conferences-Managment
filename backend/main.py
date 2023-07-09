@@ -268,6 +268,42 @@ def get_Articles(user_id: int):
             cursorArticle.close()
 
 
+@app.get("/show_Articles")
+def get_Articles():
+    with lock:
+        try:
+            cursorArticle = conn.cursor()
+            cursorArticle.execute("""
+            SELECT A.article_id, A.article_title, A.article_content,C.conference_id, C.title, C.start_date, C.Address, Co.country_name,U.user_id,S.searcher_id, U.first_name, U.last_name FROM Article A JOIN Searcher S ON A.searcher_id=S.searcher_id Join Users U ON U.user_id=S.user_id
+            JOIN Submission Su ON Su.article_id=A.article_id JOIN Conference C ON C.conference_id = Su.conference_id JOIN Country Co ON C.country = Co.country_id
+            """)
+            rows = cursorArticle.fetchall()
+
+            articles = []
+
+            for row in rows:
+                Article_data = {
+                    "article_id": row[0],
+                    "article_title": row[1],
+                    "article_content": row[2],
+                    "conference_id": row[3],
+                    "conference_title": row[4],
+                    "start_date": row[5],
+                    "address": row[6],
+                    "country_name": row[7],
+                    "user_id": row[8],
+                    "searcher_id": row[9],
+                    "first_name": row[10],
+                    "last_name": row[11]
+                }
+                articles.append(Article_data)
+
+            return {"article": articles}
+
+        finally:
+            cursorArticle.close()
+
+
 @app.post("/register")
 async def register(user: Users_Register):
     try:
@@ -501,6 +537,7 @@ async def create_submissions(c: Create_Submissions, user_id: int):
     except pyodbc.Error as e:
         print(e)
         raise HTTPException(status_code=500, detail="Database error")
+
 
 @app.post("/update_submissions1")
 async def update_submissions(c: Searcher_Edit_Articles1):

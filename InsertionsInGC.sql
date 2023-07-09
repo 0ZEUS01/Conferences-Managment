@@ -276,8 +276,12 @@ SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants
                     organizer_id=1, start_date='11-11-2022', state_conference_id=2, end_date='12-12-2022'
                 WHERE conference_id=1
 
+				SELECT A.article_id, A.article_title, A.article_content,C.conference_id, C.title, C.start_date, C.Address, Co.country_name,U.user_id,S.searcher_id, U.first_name, U.last_name FROM Article A JOIN Searcher S ON A.searcher_id=S.searcher_id Join Users U ON U.user_id=S.user_id
+JOIN Submission Su ON Su.article_id=A.article_id JOIN Conference C ON C.conference_id = Su.conference_id JOIN Country Co ON C.country = Co.country_id
+
+
 				select * from Conference 
-			insert into Searcher(user_id) values(6)
+			insert into Protractor(user_id) values(6)
 
 			SELECT u.user_id, u.first_name, u.last_name, u.email, u.phone_number, u.username, u.password, u.birthdate, u.Address, c.country_name, u.picture, u.isAdmin,
     'Role' = (CASE

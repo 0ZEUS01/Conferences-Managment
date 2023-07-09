@@ -116,13 +116,7 @@
 
 
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-                        <!-- Search -->
-                        <div class="navbar-nav align-items-center">
-                            <div class="nav-item d-flex align-items-center">
 
-                            </div>
-                        </div>
-                        <!-- /Search -->
 
                         <ul class="navbar-nav flex-row align-items-center ms-auto">
 
@@ -131,8 +125,7 @@
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
                                     data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        <img src="../admin/assets/img/avatars/1.png" alt
-                                            class="w-px-40 h-auto rounded-circle" />
+                                        <img id="profilePicture" src="" class="w-px-40 h-auto rounded-circle" />
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -141,12 +134,12 @@
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-                                                        <img src="../admin/assets/img/avatars/1.png" alt
+                                                        <img id="profilePictureDropdown" src=""
                                                             class="w-px-40 h-auto rounded-circle" />
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <span class="fw-semibold d-block">John Doe</span>
+                                                    <span class="fw-semibold d-block" id="username">John Doe</span>
                                                     <small class="text-muted">Searcher</small>
                                                 </div>
                                             </div>
@@ -169,6 +162,8 @@
                                     </li>
                                 </ul>
                             </li>
+
+
                             <!--/ User -->
                         </ul>
                     </div>
@@ -351,6 +346,7 @@
 
                 <!-- Main JS -->
                 <script src="../admin/assets/js/main.js"></script>
+                <script src="../admin/assets/js/showUserPicture.js"></script>
 
                 <!-- Page JS -->
 

@@ -689,6 +689,29 @@ async def create_report(c: Create_Report, user_id: int):
         raise HTTPException(status_code=500, detail="Database error")
 
 
+@app.post("/edit_report")
+async def update_report(c: Protractor_Edit_Report):
+    try:
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+                UPDATE Report SET report_content = ?
+                WHERE report_id = ?
+            """,
+            (
+                c.report_content,
+                c.report_id,
+            ),
+        )
+
+        conn.commit()
+        return {"message": "Report modified successfully"}
+    except pyodbc.Error as e:
+        print(e)
+        raise HTTPException(status_code=500, detail='Database error')
+
+
 @app.delete("/delete_conference/{conferenceId}")
 def delete_conference(conferenceId: int):
     try:
@@ -727,7 +750,7 @@ def delete_submissions(article_Id: int):
         )
         if cursor.fetchone()[0] == 0:
             raise HTTPException(
-                status_code=404, detail="Conference not found"
+                status_code=404, detail="Article not found"
             )
 
         cursor.execute(
@@ -741,34 +764,52 @@ def delete_submissions(article_Id: int):
 
         conn.commit()
 
-        return {"message": f"Conference {article_Id} deleted successfully"}
+        return {"message": f"Article {article_Id} deleted successfully"}
     except pyodbc.Error as e:
         print(e)
         raise HTTPException(status_code=500, detail="Database error")
 
 
-@app.post("/edit_report")
-async def update_report(c: Protractor_Edit_Report):
+@app.delete("/delete_report/{report_id}")
+def delete_submissions(report_id: int):
     try:
+        print("Deleting report with report_id:", report_id)  # Debug statement
+
         cursor = conn.cursor()
 
         cursor.execute(
-            """
-                UPDATE Report SET report_content = ?
+            "SELECT COUNT(*) FROM report WHERE report_id = ?",
+            (report_id,),
+        )
+        if cursor.fetchone()[0] == 0:
+            raise HTTPException(
+                status_code=404, detail="Report not found"
+            )
+
+        cursor.execute(
+            """ UPDATE Submission
+                SET report_id =NULL
                 WHERE report_id = ?
             """,
-            (
-                c.report_content,
-                c.report_id,
-            ),
+            (report_id,),
+        )
+        cursor.execute(
+            "DELETE FROM ReportWrittenBy WHERE report_id = ?",
+            (report_id,),
+        )
+        cursor.execute(
+            "DELETE FROM Report WHERE report_id = ?",
+            (report_id,),
         )
 
         conn.commit()
-        return {"message": "Report modified successfully"}
+
+        print("Report deleted successfully")  # Debug statement
+
+        return {"message": f"Report {report_id} deleted successfully"}
     except pyodbc.Error as e:
         print(e)
-        raise HTTPException(status_code=500, detail='Database error')
-
+        raise HTTPException(status_code=500, detail="Database error")
 
 
 if __name__ == "__main__":

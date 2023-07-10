@@ -16,6 +16,7 @@ $(document).ready(function () {
             if ("report" in response) {
                 var reports = response.report;
                 var filteredReports = reports; // Initialize filtered reports with all reports
+
                 function base64ToBytes(base64String) {
                     var byteCharacters = atob(base64String);
                     var byteNumbers = new Array(byteCharacters.length);
@@ -24,6 +25,7 @@ $(document).ready(function () {
                     }
                     return new Uint8Array(byteNumbers);
                 }
+
                 function getFileExtension(filename) {
                     return filename.split('.').pop();
                 }
@@ -39,7 +41,6 @@ $(document).ready(function () {
                             return 'application/pdf';
                     }
                 }
-
 
                 function displayReports(reports) {
                     table.empty();
@@ -103,7 +104,7 @@ $(document).ready(function () {
                                 localStorage.setItem("edit_report_id", reportId);
                             });
 
-                            var deleteLink = $('<a class="dropdown-item delete-link" href="#"><i class="bx bx-trash me-1"></i> Delete</a>');
+                            var deleteLink = $('<a class="dropdown-item delete-link" href="javascript:void(0)"><i class="bx bx-trash me-1"></i> Delete</a>');
                             deleteLink.data('report_id', report.report_id); // Store the report ID in the link's data attribute
 
                             var dropdownCell = $('<td><div class="dropdown"><button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="bx bx-dots-vertical-rounded"></i></button><div class="dropdown-menu"></div></div></td>');
@@ -121,27 +122,27 @@ $(document).ready(function () {
                 displayReports(filteredReports);
 
                 $(document).on('click', '.delete-link', function (e) {
-                    var articleId = $(this).data('articleId');
+                    var reportId = parseInt($(this).data('report_id'));
                     if (confirm("Are you sure you want to delete this Report?")) {
                         // Perform the delete operation
-                        deleteArticle(articleId);
+                        deleteReport(reportId);
                     }
                 });
-    
-                function deleteArticle(articleId) {
+
+                function deleteReport(reportId) {
                     // Send the delete request to the API
                     $.ajax({
-                        url: "http://127.0.0.1:8000/delete_report/" + articleId,
+                        url: "http://127.0.0.1:8000/delete_report/" + reportId,
                         type: "DELETE",
                         success: function (response) {
                             // Handle the successful response
-                            alert("Article deleted successfully");
+                            alert("Report deleted successfully");
                             // Refresh the page
                             location.reload();
                         },
                         error: function (xhr, status, error) {
                             // Handle the error response
-                            console.error("Article deletion request failed:", error);
+                            console.error("Report deletion request failed:", error);
                         },
                     });
                 }

@@ -170,6 +170,9 @@
 
 		UPDATE OrganizerDecision SET decision_id = 0 WHERE submission_id = (SELECT submission_id FROM Submission Where article_id = 0)
 
+		UPDATE OrganizerDecision
+SET decision_id = 2
+WHERE submission_id = 4;
 		-- Create Decision table
 		CREATE TABLE Decision (
 			decision_id BIGINT IDENTITY,

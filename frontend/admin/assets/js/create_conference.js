@@ -10,6 +10,8 @@ formCreateConference.addEventListener("submit", async (e) => {
 
     let MinPNb = document.getElementById("MinPNb").value;
     let MaxPNb = document.getElementById("MaxPNb").value;
+    let MinPNbN = parseInt(document.getElementById("MinPNb").value);
+    let MaxPNbN =parseInt(document.getElementById("MaxPNb").value);
     let country_id = document.getElementById("country").value;
 
     // Check if any input is empty
@@ -30,7 +32,7 @@ formCreateConference.addEventListener("submit", async (e) => {
         alert("The starting date must be before the ending date of the conference");
         return false; // Prevent form submission
     }
-    if (MinPNb > MaxPNb) {
+    if (MinPNbN > MaxPNbN) {
         alert("The minimum participant number must be smaller than maximum participant number");
         return false; // Prevent form submission
     }

@@ -252,7 +252,7 @@ GO
 
 INSERT INTO State_conference Values('COMPLETED'),('ENDED'),('SCHEDULED'),('CANCELED');
 GO
-
+select * from Users
 INSERT INTO Decision Values('REFUSED'),('APPROVED'),('UNREVIEWED');
 GO
 DELETE FROM Conference WHERE conference_id=3
@@ -271,6 +271,10 @@ SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants
 			FROM Article A JOIN Submission S ON S.article_id = A.article_id  JOIN Conference C ON C.conference_id=S.conference_id 
 			LEFT JOIN OrganizerDecision OD ON S.submission_id=OD.submission_id LEFT JOIN Decision D ON D.decision_id=OD.decision_id
 
+			    UPDATE OrganizerDecision SET decision_id = 2 
+                WHERE submission_id IN (SELECT submission_id FROM Submission Where article_id = 8)
+
+				SELECT user_id FROM Organizer WHERE organizer_id =2
 			UPDATE Conference
                 SET title='ff', country=2, address='ff', min_participants=4, max_participants=6,
                     organizer_id=1, start_date='11-11-2022', state_conference_id=2, end_date='12-12-2022'
@@ -279,9 +283,9 @@ SELECT Co.title, C.country_name, Co.start_date, Co.end_date, Co.min_participants
 				SELECT A.article_id, A.article_title, A.article_content,C.conference_id, C.title, C.start_date, C.Address, Co.country_name,U.user_id,S.searcher_id, U.first_name, U.last_name FROM Article A JOIN Searcher S ON A.searcher_id=S.searcher_id Join Users U ON U.user_id=S.user_id
 JOIN Submission Su ON Su.article_id=A.article_id JOIN Conference C ON C.conference_id = Su.conference_id JOIN Country Co ON C.country = Co.country_id
 
-
-				select * from Report
-			insert into Protractor(user_id) values(3)
+SELECT * FROM OrganizerDecision WHERE submission_id = 2 AND organizer_id = 1
+				select * from Users
+			insert into Searcher(user_id) values(7)
 
 								SELECT R.report_id, R.report_content, U.first_name, U.last_name, C.title, A.article_title, A.article_content, D.decision FROM Report R 
 					JOIN ReportWrittenBy RW ON RW.report_id = R.report_id

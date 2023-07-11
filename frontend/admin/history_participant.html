@@ -87,6 +87,7 @@
             <div class="layout-page">
                 <!-- Navbar -->
 
+
                 <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
                     id="layout-navbar">
                     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
@@ -100,8 +101,8 @@
                         <div class="navbar-nav align-items-center">
                             <div class="nav-item d-flex align-items-center">
                                 <i class="bx bx-search fs-4 lh-0"></i>
-                                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
-                                    aria-label="Search..." />
+                                <input type="text" class="form-control border-0 shadow-none" id="searchBar"
+                                    placeholder="Search..." aria-label="Search..." />
                             </div>
                         </div>
                         <!-- /Search -->
@@ -113,8 +114,7 @@
                                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
                                     data-bs-toggle="dropdown">
                                     <div class="avatar avatar-online">
-                                        <img src="../admin/assets/img/avatars/1.png" alt
-                                            class="w-px-40 h-auto rounded-circle" />
+                                        <img id="profilePicture" src="" class="w-px-40 h-auto rounded-circle" />
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
@@ -123,12 +123,12 @@
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">
-                                                        <img src="../admin/assets/img/avatars/1.png" alt
+                                                        <img id="profilePictureDropdown" src=""
                                                             class="w-px-40 h-auto rounded-circle" />
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <span class="fw-semibold d-block">John Doe</span>
+                                                    <span class="fw-semibold d-block" id="username">John Doe</span>
                                                     <small class="text-muted">Participant</small>
                                                 </div>
                                             </div>
@@ -151,6 +151,8 @@
                                     </li>
                                 </ul>
                             </li>
+
+
                             <!--/ User -->
                         </ul>
                     </div>
@@ -175,7 +177,6 @@
                                                 <th>Country</th>
                                                 <th>start | End</th>
                                                 <th>Address</th>
-                                                <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -193,7 +194,6 @@
                                                 <td>
                                                     Avenue France Agdal,Rabat
                                                 </td>
-                                                <td><span class="badge bg-label-danger me-1">Ended</span></td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -228,7 +228,6 @@
                                                     Avenue France Agdal,Rabat
 
                                                 </td>
-                                                <td><span class="badge bg-label-success me-1">upcoming</span></td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -267,7 +266,6 @@
                                                     Avenue France Agdal,Rabat
 
                                                 </td>
-                                                <td><span class="badge bg-label-danger me-1">Ended</span></td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -290,18 +288,17 @@
                                             </tr>
                                             <tr>
                                                 <td><i class="fab fa-angular fa-lg text-danger me-3"></i>
-                                                    <strong>Title1</strong>
+                                                    <strong>Conference Test</strong>
                                                 </td>
-                                                <td>Hungary</td>
+                                                <td>Morocco</td>
                                                 <td>
 
-                                                    12-12-2022 | 14-12-2022
+                                                    11-7-2022 | 20-7-2022
 
                                                 </td>
                                                 <td>
-                                                    Avenue France Agdal,Rabat
+                                                    Agdal, Rabat
                                                 </td>
-                                                <td><span class="badge bg-label-success me-1">Upcoming</span></td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -309,7 +306,7 @@
                                                             <i class="bx bx-dots-vertical-rounded"></i>
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="javascript:void(0);"><svg
+                                                            <a class="dropdown-item" href="../landing/conference_details.html"><svg
                                                                     xmlns="http://www.w3.org/2000/svg" width="16"
                                                                     height="16" fill="currentColor"
                                                                     class="bi bi-info-circle" viewBox="0 0 16 16">
@@ -369,7 +366,7 @@
 
                 <!-- Main JS -->
                 <script src="../admin/assets/js/main.js"></script>
-
+                <script src="../admin/assets/js/showUserPicture.js"></script>
                 <!-- Page JS -->
 
                 <!-- Place this tag in your head or just before your close body tag. -->

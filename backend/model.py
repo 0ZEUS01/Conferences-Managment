@@ -75,6 +75,10 @@ class Protractor_Edit_Report(BaseModel):
     report_id: int
     report_content: bytes
 
+class Article_decision(BaseModel):
+    decision_id: int
+    organizer_id: int
+
 class Organizer(BaseModel):
     organizer_id: int
     user_id: int

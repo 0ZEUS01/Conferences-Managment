@@ -168,7 +168,7 @@
 		);
 		GO
 
-
+		UPDATE OrganizerDecision SET decision_id = 0 WHERE submission_id = (SELECT submission_id FROM Submission Where article_id = 0)
 
 		-- Create Decision table
 		CREATE TABLE Decision (

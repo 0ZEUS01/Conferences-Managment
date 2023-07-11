@@ -79,6 +79,30 @@ def get_state():
             cursorState.close()
 
 
+@app.get("/decision")
+def get_decision():
+    with lock:
+        try:
+            cursorDecision = conn.cursor()
+            cursorDecision.execute(
+                        "SELECT decision_id, decision FROM Decision")
+            rows = cursorDecision.fetchall()
+
+            decisions = []
+
+            for row in rows:
+                decision_data = {
+                    "decision_id": row[0],
+                    "decision": row[1]
+                }
+                decisions.append(decision_data)
+
+            return {"decision": decisions}
+
+        finally:
+            cursorDecision.close()
+
+
 @app.get("/get_conference")
 def get_conference():
     with lock:
@@ -304,13 +328,133 @@ def get_Articles():
             cursorArticle.close()
 
 
+@app.get("/show_Reports")
+def get_reports():
+    with lock:
+        try:
+            cursorReport = conn.cursor()
+            cursorReport.execute("""
+                SELECT R.report_id, R.report_content, U.first_name, U.last_name, C.title, A.article_title, A.article_content, D.decision,A.article_id FROM Report R
+				JOIN ReportWrittenBy RW ON RW.report_id = R.report_id
+				JOIN Protractor P ON P.protractor_id = RW.protractor_id
+				JOIN Users U ON P.user_id = U.user_id
+				JOIN Submission S ON S.report_id = R.report_id
+				JOIN Conference C ON C.conference_id = S.conference_id
+				JOIN Article A ON A.article_id = S.article_id
+				LEFT JOIN OrganizerDecision OD ON S.submission_id = OD.submission_id
+				LEFT JOIN Decision D ON D.decision_id = OD.decision_id
+            """)
+            rows = cursorReport.fetchall()
+
+            reports = []
+
+            for row in rows:
+                report_data = {
+                    "report_id": row[0],
+                    "report_content": row[1],
+                    "protractor_first_name": row[2],
+                    "protractor_last_name": row[3],
+                    "conference_title": row[4],
+                    "article_title": row[5],
+                    "article_content": row[6],
+                    "decision": row[7],
+                    "article_id": row[8]
+                }
+                reports.append(report_data)
+
+            return {"report": reports}
+
+        finally:
+            cursorReport.close()
+
+@app.get("/show_Approved_Reports")
+def get_reports():
+    with lock:
+        try:
+            cursorReport = conn.cursor()
+            cursorReport.execute("""
+                SELECT R.report_id, R.report_content, U.first_name, U.last_name, C.title, A.article_title, A.article_content, D.decision,A.article_id FROM Report R
+				JOIN ReportWrittenBy RW ON RW.report_id = R.report_id
+				JOIN Protractor P ON P.protractor_id = RW.protractor_id
+				JOIN Users U ON P.user_id = U.user_id
+				JOIN Submission S ON S.report_id = R.report_id
+				JOIN Conference C ON C.conference_id = S.conference_id
+				JOIN Article A ON A.article_id = S.article_id
+				LEFT JOIN OrganizerDecision OD ON S.submission_id = OD.submission_id
+				LEFT JOIN Decision D ON D.decision_id = OD.decision_id
+                WHERE D.decision = 'APPROVED'
+            """)
+            rows = cursorReport.fetchall()
+
+            reports = []
+
+            for row in rows:
+                report_data = {
+                    "report_id": row[0],
+                    "report_content": row[1],
+                    "protractor_first_name": row[2],
+                    "protractor_last_name": row[3],
+                    "conference_title": row[4],
+                    "article_title": row[5],
+                    "article_content": row[6],
+                    "decision": row[7],
+                    "article_id": row[8]
+                }
+                reports.append(report_data)
+
+            return {"report": reports}
+
+        finally:
+            cursorReport.close()
+
+@app.get("/show_Refused_Reports")
+def get_reports():
+    with lock:
+        try:
+            cursorReport = conn.cursor()
+            cursorReport.execute("""
+                SELECT R.report_id, R.report_content, U.first_name, U.last_name, C.title, A.article_title, A.article_content, D.decision,A.article_id FROM Report R
+				JOIN ReportWrittenBy RW ON RW.report_id = R.report_id
+				JOIN Protractor P ON P.protractor_id = RW.protractor_id
+				JOIN Users U ON P.user_id = U.user_id
+				JOIN Submission S ON S.report_id = R.report_id
+				JOIN Conference C ON C.conference_id = S.conference_id
+				JOIN Article A ON A.article_id = S.article_id
+				LEFT JOIN OrganizerDecision OD ON S.submission_id = OD.submission_id
+				LEFT JOIN Decision D ON D.decision_id = OD.decision_id
+                WHERE D.decision = 'REFUSED'
+            """)
+            rows = cursorReport.fetchall()
+
+            reports = []
+
+            for row in rows:
+                report_data = {
+                    "report_id": row[0],
+                    "report_content": row[1],
+                    "protractor_first_name": row[2],
+                    "protractor_last_name": row[3],
+                    "conference_title": row[4],
+                    "article_title": row[5],
+                    "article_content": row[6],
+                    "decision": row[7],
+                    "article_id": row[8]
+                }
+                reports.append(report_data)
+
+            return {"report": reports}
+
+        finally:
+            cursorReport.close()
+
+
 @app.get("/show_Reports/{user_id}")
 def get_reports(user_id: int):
     with lock:
         try:
             cursorReport = conn.cursor()
             cursorReport.execute("""
-                SELECT R.report_id, R.report_content, U.first_name, U.last_name, C.title, A.article_title, A.article_content, D.decision FROM Report R 
+                SELECT R.report_id, R.report_content, U.first_name, U.last_name, C.title, A.article_title, A.article_content, D.decision FROM Report R
 				JOIN ReportWrittenBy RW ON RW.report_id = R.report_id
 				JOIN Protractor P ON P.protractor_id = RW.protractor_id
 				JOIN Users U ON P.user_id = U.user_id
@@ -651,7 +795,7 @@ async def create_report(c: Create_Report, user_id: int):
 
         cursor.execute(
             """
-		        INSERT INTO Report (report_content) 
+		        INSERT INTO Report (report_content)
                 OUTPUT inserted.report_id
                 VALUES(?)
             """,
@@ -669,7 +813,7 @@ async def create_report(c: Create_Report, user_id: int):
 
         cursor.execute(
             """
-		        INSERT INTO ReportWrittenBy(protractor_id, report_id) 
+		        INSERT INTO ReportWrittenBy(protractor_id, report_id)
                 VALUES (?, ?)
             """,
             (protractor_id, report_id,)
@@ -677,7 +821,7 @@ async def create_report(c: Create_Report, user_id: int):
 
         cursor.execute(
             """
-		        UPDATE Submission 
+		        UPDATE Submission
                 SET report_id = ? WHERE article_id = ?
             """,
             (report_id, c.article_id,)
@@ -710,6 +854,57 @@ async def update_report(c: Protractor_Edit_Report):
     except pyodbc.Error as e:
         print(e)
         raise HTTPException(status_code=500, detail='Database error')
+
+@app.post("/edit_Article_decision/{article_id}")
+async def update_report(c: Article_decision, article_id: int):
+    try:
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """SELECT submission_id FROM Submission WHERE article_id=?
+            """,
+            (article_id,),
+        )
+        submission_id = cursor.fetchone()[0]
+
+        cursor.execute(
+            """SELECT user_id FROM Organizer WHERE organizer_id =?
+            """,
+            (c.organizer_id,),
+        )
+        organizer = cursor.fetchone()[0]
+
+        # Check if the OrganizerDecision already exists
+        cursor.execute(
+            """SELECT * FROM OrganizerDecision WHERE submission_id = ? AND organizer_id = ?;
+            """,
+            (submission_id,organizer),
+        )
+        existing_decision = cursor.fetchone()
+
+        if existing_decision:
+            # Update the existing OrganizerDecision
+            cursor.execute(
+                """UPDATE OrganizerDecision
+                SET decision_id = ?
+                WHERE submission_id = ?;
+                """,
+                (c.decision_id, submission_id),
+            )
+        else:
+            # Insert a new OrganizerDecision
+            cursor.execute(
+                """INSERT INTO OrganizerDecision (organizer_id, submission_id, decision_id)
+                VALUES (?, ?, ?);
+                """,
+                (organizer, submission_id, c.decision_id),
+            )
+
+        conn.commit()
+        return {"message": "decision modified successfully"}
+    except pyodbc.Error as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Database error")
 
 
 @app.delete("/delete_conference/{conferenceId}")
